@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useQuiz } from '@/hooks/useQuiz'
 import StepMBTI from '@/components/quiz/StepMBTI'
@@ -19,39 +19,19 @@ export default function QuizPage() {
   
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Auto-advance Step 1 when 4 items are selected
-  useEffect(() => {
-    const isComplete = Object.values(state.mbti).every(v => v !== '')
-    if (state.step === 1 && isComplete) {
-      const t = setTimeout(() => nextStep(), 500)
-      return () => clearTimeout(t)
-    }
-  }, [state.step, state.mbti, nextStep])
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (reason?: string) => {
     setIsSubmitting(true)
 
-    // Option: If Kakao login is required BEFORE seeing the result:
+    // Build quiz data, using the passed reason to avoid state race condition
     const quizData = {
       m: state.mbti.EI + state.mbti.SN + state.mbti.TF + state.mbti.JP,
       c: state.concern,
-      r: state.reason
+      r: reason || state.reason
     }
     const stateStr = encodeURIComponent(JSON.stringify(quizData))
     
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
-    
-    // If no Kakao ID is configured, immediately go to saving page
-    if (!clientId) {
-      router.push(`/saving?state=${stateStr}`)
-      return
-    }
-
-    const redirectUri = `${window.location.origin}/api/auth/kakao/callback`
-    const authUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${stateStr}`
-    
-    // Redirect to Kakao Login
-    window.location.href = authUrl
+    // Go directly to saving page (Kakao auth can be done later from result page)
+    router.push(`/saving?state=${stateStr}`)
   }
 
   if (isSubmitting) {
@@ -62,7 +42,7 @@ export default function QuizPage() {
     <div className="bg-white min-h-[100dvh]">
       {state.step === 1 && <StepMBTI state={state} setMBTI={setMBTI} onNext={nextStep} />}
       {state.step === 2 && <StepConcern state={state} onNext={(concern) => { setConcern(concern); nextStep(); }} />}
-      {state.step === 3 && <StepReason setReason={setReason} setFreeText={setFreeText} onSubmit={handleSubmit} />}
+      {state.step === 3 && <StepReason setReason={setReason} setFreeText={setFreeText} onSubmit={(reason) => handleSubmit(reason)} />}
     </div>
   )
 }
