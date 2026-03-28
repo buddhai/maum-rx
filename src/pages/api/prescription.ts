@@ -72,17 +72,39 @@ MBTI: ${mbtiStr}
     }
   }
 
-  // Firebase 저장
-  const { id, code } = await saveRxSession({
-    kakaoId,
-    kakaoName,
-    mbti: mbtiStr,
-    concern,
-    reason,
-    freeText: freeText || '',
-    aiLine,
-    prescription,
-  })
+  // Firebase 저장 — with timeout to prevent hanging on misconfigured DB
+  let id = 'local-' + Date.now()
+  let code = ''
+
+  // Generate a local fallback code
+  const prefixes = ['연꽃의', '자비의', '지혜의', '보리의', '인연의', '무상의', '선정의', '공덕의']
+  const suffixes = ['해탈', '보살', '선정', '공덕', '열반', '반야', '자비', '지혜']
+  const fallbackCode = prefixes[Math.floor(Math.random() * prefixes.length)] + ' ' + suffixes[Math.floor(Math.random() * suffixes.length)]
+
+  try {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('DB timeout')), 5000)
+    )
+    const result = await Promise.race([
+      saveRxSession({
+        kakaoId,
+        kakaoName,
+        mbti: mbtiStr,
+        concern,
+        reason,
+        freeText: freeText || '',
+        aiLine,
+        prescription,
+      }),
+      timeoutPromise
+    ])
+    id = result.id
+    code = result.code
+  } catch {
+    // DB failed or timed out — use fallback code
+    code = fallbackCode
+    console.error('Firestore save failed, using fallback code:', code)
+  }
 
   return res.status(200).json({ id, code, aiLine, prescription, mbtiStr })
 }

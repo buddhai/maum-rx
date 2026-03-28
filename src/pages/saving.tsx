@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import LoadingScreen from '@/components/quiz/LoadingScreen'
 
 export default function SavingPage() {
   const router = useRouter()
   const { state } = router.query
-  const [errorMsg] = useState('')
   const hasSaved = useRef(false)
 
   useEffect(() => {
@@ -22,7 +21,6 @@ export default function SavingPage() {
       try {
         const decoded = JSON.parse(decodeURIComponent(state as string))
         
-        // Payload parsing
         const mbtiObj = {
           EI: decoded.m?.[0] || 'E',
           SN: decoded.m?.[1] || 'S',
@@ -39,40 +37,33 @@ export default function SavingPage() {
           kakaoName: decoded.k_name || null
         }
 
+        // Use AbortController to enforce a strict 8-second timeout
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 8000)
+
         const res = await fetch('/api/prescription', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
+          signal: controller.signal,
         })
+        clearTimeout(timeoutId)
+
         const data = await res.json()
-        
         if (!res.ok) throw new Error(data.message || 'Server error')
         
-        setTimeout(() => {
-          router.replace(`/result?code=${encodeURIComponent(data.code)}`)
-        }, 2000)
+        router.replace(`/result?code=${encodeURIComponent(data.code)}`)
 
       } catch (err) {
-        console.error("Failed to submit quiz, using fallback:", err)
-        const fallbackCode = '연꽃의 해탈'
-        setTimeout(() => {
-          router.replace(`/result?code=${encodeURIComponent(fallbackCode)}&fallback=true`)
-        }, 2000)
+        console.error("API failed, using fallback:", err)
+        // Always go to result with fallback — never stay stuck
+        router.replace(`/result?code=${encodeURIComponent('연꽃의 해탈')}&fallback=true`)
       }
     }
 
     savePrescription()
 
   }, [router.isReady, state, router])
-
-  if (errorMsg) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[100vh] bg-white text-[var(--primary-green)]">
-        <p>{errorMsg}</p>
-        <button onClick={() => router.push('/')} className="mt-4 px-4 py-2 border rounded">홈으로</button>
-      </div>
-    )
-  }
 
   return <LoadingScreen />
 }
