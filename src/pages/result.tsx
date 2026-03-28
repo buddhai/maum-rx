@@ -14,7 +14,7 @@ interface ResultProps {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { code, fallback } = context.query
+  const { code } = context.query
   if (!code || typeof code !== 'string') {
     return { redirect: { destination: '/', permanent: false } }
   }
