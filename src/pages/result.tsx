@@ -19,30 +19,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { redirect: { destination: '/', permanent: false } }
   }
 
-  const session = await getRxByCode(code)
+  // Try to fetch from Firestore with a strict 3-second timeout
+  let session = null
+  try {
+    const timeoutPromise = new Promise<null>((resolve) =>
+      setTimeout(() => resolve(null), 3000)
+    )
+    session = await Promise.race([
+      getRxByCode(code),
+      timeoutPromise
+    ])
+  } catch {
+    // Firestore error — session stays null
+  }
   
   if (!session) {
-    if (fallback === 'true') {
-      // Create a dummy session for fallback mode when DB is failing
-      return {
-        props: {
-          session: {
-            code: code,
-            mbtiStr: 'INTJ', // Default or random
-            concern: '번아웃',
-            reason: '편안해지고싶어서',
-            aiLine: '잠시 쉼표를 찍어도 괜찮습니다. 당신의 가치는 속도가 아닌 방향에 있으니까요.',
-            createdAt: Date.now(),
-            isFallback: true
-          }
+    // Always provide a fallback session so the user NEVER gets redirected away
+    return {
+      props: {
+        session: {
+          code: code,
+          mbtiStr: 'INTJ',
+          concern: '번아웃',
+          reason: '편안해지고싶어서',
+          aiLine: '잠시 쉼표를 찍어도 괜찮습니다. 당신의 가치는 속도가 아닌 방향에 있으니까요.',
+          createdAt: Date.now(),
+          isFallback: true
         }
       }
     }
-    return { redirect: { destination: '/', permanent: false } }
   }
 
-  // Convert Firebase Timestamp to string/number if needed, but db.ts might return serializable data.
-  // Actually, db.ts getPrescriptionSession returns a document data object. We must serialize createdAt.
   const serializedSession = {
     ...session,
     createdAt: session.createdAt?.getTime ? session.createdAt.getTime() : Date.now()
