@@ -30,10 +30,19 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
   return (
     <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[59px] pb-[70px] animate-fade-in relative w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
-      {/* Back Button */}
-      <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
-        <span className="text-[18px]">←</span> 뒤로가기
-      </button>
+      {/* Back Button - arrow only within MBTI, text when going to landing */}
+      {activeIndex === 0 ? (
+        <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
+          <span className="text-[18px]">←</span> 뒤로가기
+        </button>
+      ) : (
+        <button
+          onClick={() => setMBTI(AXISES[activeIndex - 1].key, '')}
+          className="self-start mb-[16px] w-[36px] h-[36px] rounded-full flex items-center justify-center text-[var(--primary-green)] text-[20px] hover:bg-[#F0F5F2] transition-all shrink-0"
+        >
+          ←
+        </button>
+      )}
 
       {/* Top Progress Bar - Step 1 of 3 */}
       <div className="flex gap-[12px] mb-[40px] w-full shrink-0">
