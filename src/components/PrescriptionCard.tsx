@@ -119,17 +119,17 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
 
         <div className="px-[20px] w-full flex flex-col gap-[24px]">
           
-          {/* Section 1: 마음 상태 분석 (Green Banner Header) */}
-          <div className="flex flex-col border-[1.5px] border-[var(--primary-green)] rounded-[16px] bg-white overflow-hidden shadow-[0_4px_12px_rgba(0,104,55,0.06)]">
-            <div className="bg-[var(--primary-green)] text-white text-center py-2 font-bold text-[14px] tracking-wide font-scdream">
+          {/* Section 1: 마음 상태 분석 */}
+          <div className="flex flex-col bg-white overflow-hidden">
+            <div className="bg-[var(--primary-green)] text-white text-center py-2 rounded-[12px] font-bold text-[14px] tracking-wide font-scdream mb-3">
               마음 상태 분석
             </div>
-            <div className="p-4 flex flex-col gap-3 text-[15px]">
-              <div className="flex justify-between items-center border-b border-gray-100 pb-2">
+            <div className="flex flex-col gap-3 text-[15px]">
+              <div className="flex justify-between items-center pb-2">
                 <span className="font-bold text-[var(--primary-green)] opacity-90">나의 MBTI</span>
                 <span className="font-bold text-gray-800 bg-[#F0F5F2] px-3 py-1 rounded-full">{mbtiStr}</span>
               </div>
-              <div className="flex justify-between items-center border-b border-gray-100 pb-2">
+              <div className="flex justify-between items-center pb-2">
                 <span className="font-bold text-[var(--primary-green)] opacity-90">요즘 가장 큰 고민</span>
                 <span className="font-bold text-gray-800">{concernLabel}</span>
               </div>

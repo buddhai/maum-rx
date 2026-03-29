@@ -1,71 +1,44 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import html2canvas from 'html2canvas'
 import MobileLayout from '@/components/MobileLayout'
 import { PrescriptionCard } from '@/components/PrescriptionCard'
-import { getRxByCode } from '@/lib/db'
 import { PRESCRIPTIONS } from '@/lib/prescriptions'
 import type { Concern, Reason } from '@/lib/prescriptions'
 
-interface ResultProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  session: any | null // Type properly if possible
+interface SessionData {
+  code: string
+  mbtiStr: string
+  concern: string
+  reason: string
+  aiLine: string
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { code } = context.query
-  if (!code || typeof code !== 'string') {
-    return { redirect: { destination: '/', permanent: false } }
-  }
-
-  // Try to fetch from Firestore with a strict 3-second timeout
-  let session = null
-  try {
-    const timeoutPromise = new Promise<null>((resolve) =>
-      setTimeout(() => resolve(null), 3000)
-    )
-    session = await Promise.race([
-      getRxByCode(code),
-      timeoutPromise
-    ])
-  } catch {
-    // Firestore error — session stays null
-  }
-  
-  if (!session) {
-    // Always provide a fallback session so the user NEVER gets redirected away
-    return {
-      props: {
-        session: {
-          code: code,
-          mbtiStr: 'INTJ',
-          concern: '번아웃',
-          reason: '편안해지고싶어서',
-          aiLine: '잠시 쉼표를 찍어도 괜찮습니다. 당신의 가치는 속도가 아닌 방향에 있으니까요.',
-          createdAt: Date.now(),
-          isFallback: true
-        }
-      }
-    }
-  }
-
-  const serializedSession = {
-    ...session,
-    createdAt: session.createdAt?.getTime ? session.createdAt.getTime() : Date.now()
-  }
-
-  return { props: { session: serializedSession } }
-}
-
-export default function ResultPage({ session }: ResultProps) {
+export default function ResultPage() {
+  const router = useRouter()
   const printRef = useRef<HTMLDivElement>(null)
   const [savingImage, setSavingImage] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [session, setSession] = useState<SessionData | null>(null)
+
+  useEffect(() => {
+    if (!router.isReady) return
+    const { data } = router.query
+    if (!data || typeof data !== 'string') {
+      router.replace('/')
+      return
+    }
+    try {
+      const parsed = JSON.parse(decodeURIComponent(data))
+      setSession(parsed)
+    } catch {
+      router.replace('/')
+    }
+  }, [router.isReady, router.query, router])
 
   if (!session) return null
 
-  // Find the exact prescription data
   const prescription = PRESCRIPTIONS[session.concern as Concern]?.[session.reason as Reason]
 
   const handleSaveImage = async () => {
@@ -86,10 +59,6 @@ export default function ResultPage({ session }: ResultProps) {
     }
   }
 
-  // Kakao Login & Send implemented via Next.js auth or custom route
-  // From implementation_plan: `/result` has "카카오로 받기" which triggers kakao login
-  // We can just redirect to `/api/auth/kakao/callback` with code? Actually kakao auth flow requires KAKAO REST API.
-  // Since we have `kakao.ts` we'll just redirect to Kakao auth URL.
   const handleKakao = () => {
     const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
     const redirectUri = `${window.location.origin}/api/auth/kakao/callback`
@@ -103,7 +72,7 @@ export default function ResultPage({ session }: ResultProps) {
         <title>처방전 - {session.code}</title>
       </Head>
 
-      {/* The Scrollable View - buttons are part of scrollable content (not fixed) */}
+      {/* Scrollable content including buttons */}
       <div className="w-full flex-1 overflow-y-auto animate-fade-in bg-white">
         {prescription && (
           <PrescriptionCard
@@ -117,41 +86,41 @@ export default function ResultPage({ session }: ResultProps) {
             isPrintMode={false}
           />
         )}
-      </div>
 
-      {/* Buttons inline at the bottom of scrollable content */}
-      <div className="w-full px-[20px] pb-[40px] pt-[16px] flex flex-col gap-[10px]">
-        <button
-          onClick={() => setShowModal(true)}
-          className="w-full h-[60px] rounded-[30px] bg-[var(--primary-green)] text-white text-[18px] font-bold font-scdream tracking-wide shadow-[0_4px_14px_rgba(0,104,55,0.3)] transition-transform hover:scale-[1.02] flex items-center justify-center gap-2"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          현장 프린터 출력하기
-        </button>
-        
-        <div className="flex gap-[10px]">
+        {/* Buttons with proper spacing */}
+        <div className="w-full px-[20px] pb-[40px] pt-[24px] flex flex-col gap-[12px]">
           <button
-            onClick={handleKakao}
-            className="flex-1 h-[52px] rounded-[26px] bg-[#FEE500] text-[#000000] text-[15px] font-bold tracking-tight transition-transform hover:scale-[1.02] flex items-center justify-center gap-1.5"
+            onClick={() => setShowModal(true)}
+            className="w-full h-[56px] rounded-[16px] bg-[var(--primary-green)] text-white text-[16px] font-bold font-scdream tracking-wide shadow-[0_4px_14px_rgba(0,104,55,0.3)] transition-transform hover:scale-[1.02] flex items-center justify-center gap-2"
           >
-            카카오톡 공유
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            현장 프린터 출력하기
           </button>
           
+          <div className="flex gap-[10px]">
+            <button
+              onClick={handleKakao}
+              className="flex-1 h-[48px] rounded-[14px] bg-[#FEE500] text-[#000000] text-[15px] font-bold tracking-tight transition-transform hover:scale-[1.02] flex items-center justify-center gap-1.5"
+            >
+              카카오톡 공유
+            </button>
+            
+            <button
+              onClick={handleSaveImage}
+              disabled={savingImage}
+              className="flex-1 h-[48px] rounded-[14px] bg-[#F0F5F2] text-[var(--primary-green)] text-[15px] font-bold tracking-tight transition-transform hover:bg-[#E0EBE4] flex items-center justify-center gap-1.5"
+            >
+              {savingImage ? '저장 중...' : '이미지 저장'}
+            </button>
+          </div>
+
           <button
-            onClick={handleSaveImage}
-            disabled={savingImage}
-            className="flex-1 h-[52px] rounded-[26px] bg-white border-[1.5px] border-[var(--primary-green)] text-[var(--primary-green)] text-[15px] font-bold tracking-tight transition-transform hover:bg-[#F0F5F2] flex items-center justify-center gap-1.5"
+            onClick={() => window.location.href = '/'}
+            className="w-full h-[44px] rounded-[14px] bg-transparent text-gray-400 text-[14px] font-medium tracking-tight transition-all hover:text-[var(--primary-green)] flex items-center justify-center gap-1"
           >
-            {savingImage ? '저장 중...' : '이미지 저장'}
+            ← 처음으로 돌아가기
           </button>
         </div>
-
-        <button
-          onClick={() => window.location.href = '/'}
-          className="w-full h-[48px] rounded-[24px] bg-transparent text-[var(--primary-green)] text-[15px] font-medium tracking-tight transition-all hover:bg-[#F0F5F2] flex items-center justify-center gap-1"
-        >
-          ← 처음으로 돌아가기
-        </button>
       </div>
 
       {/* Print Info Modal */}
@@ -162,7 +131,7 @@ export default function ResultPage({ session }: ResultProps) {
             <p className="text-[15px] text-gray-600 mb-[24px] leading-relaxed break-keep">
               현장 행사 부스에 방문하여<br/>아래 출력 코드를 제시해주세요.
             </p>
-            <div className="bg-[#F0F5F2] rounded-[16px] py-[24px] mb-[28px] border border-[var(--primary-green)] border-opacity-20">
+            <div className="bg-[#F0F5F2] rounded-[16px] py-[24px] mb-[28px]">
               <div className="text-[32px] font-black text-[var(--dark)] tracking-[4px] font-scdream">
                 {session.code}
               </div>
