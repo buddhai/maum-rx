@@ -6,6 +6,7 @@ import { CONCERN_LABELS } from '@/lib/prescriptions'
 interface StepConcernProps {
   state: QuizState
   onNext: (concern: Concern) => void
+  onBack: () => void
 }
 
 const CONCERNS: { key: Concern; icon: string }[] = [
@@ -17,12 +18,17 @@ const CONCERNS: { key: Concern; icon: string }[] = [
   { key: '막연한불안', icon: '💭' },
 ]
 
-export default function StepConcern({ state, onNext }: StepConcernProps) {
+export default function StepConcern({ state, onNext, onBack }: StepConcernProps) {
   const [selected, setSelected] = useState<Concern | null>(state.concern || null)
 
   return (
     <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[59px] pb-[40px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
+      {/* Back Button */}
+      <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
+        <span className="text-[18px]">←</span> 뒤로가기
+      </button>
+
       {/* Top Progress Bar - Step 2 of 3 */}
       <div className="flex gap-[12px] mb-[40px] w-full shrink-0">
         <div className="h-[6px] flex-1 rounded-[3px] bg-[var(--primary-green)]" />

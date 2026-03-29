@@ -15,6 +15,7 @@ export default function QuizPage() {
     setReason, 
     setFreeText, 
     nextStep,
+    prevStep,
   } = useQuiz()
   
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -40,9 +41,9 @@ export default function QuizPage() {
 
   return (
     <div className="bg-white min-h-[100dvh]">
-      {state.step === 1 && <StepMBTI state={state} setMBTI={setMBTI} onNext={nextStep} />}
-      {state.step === 2 && <StepConcern state={state} onNext={(concern) => { setConcern(concern); nextStep(); }} />}
-      {state.step === 3 && <StepReason setReason={setReason} setFreeText={setFreeText} onSubmit={(reason) => handleSubmit(reason)} />}
+      {state.step === 1 && <StepMBTI state={state} setMBTI={setMBTI} onNext={nextStep} onBack={() => router.push('/')} />}
+      {state.step === 2 && <StepConcern state={state} onNext={(concern) => { setConcern(concern); nextStep(); }} onBack={prevStep} />}
+      {state.step === 3 && <StepReason setReason={setReason} setFreeText={setFreeText} onSubmit={(reason) => handleSubmit(reason)} onBack={prevStep} />}
     </div>
   )
 }

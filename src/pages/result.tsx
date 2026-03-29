@@ -103,8 +103,8 @@ export default function ResultPage({ session }: ResultProps) {
         <title>처방전 - {session.code}</title>
       </Head>
 
-      {/* The Scrollable View */}
-      <div className="w-full flex-1 overflow-y-auto animate-fade-in pb-[120px] bg-white">
+      {/* The Scrollable View - buttons are part of scrollable content (not fixed) */}
+      <div className="w-full flex-1 overflow-y-auto animate-fade-in bg-white">
         {prescription && (
           <PrescriptionCard
             ref={printRef}
@@ -119,14 +119,14 @@ export default function ResultPage({ session }: ResultProps) {
         )}
       </div>
 
-      {/* Fixed Bottom Button Area (Glassmorphism or solid white container) */}
-      <div className="fixed bottom-0 w-full max-w-[375px] bg-white border-t border-gray-100 p-[20px] pt-[16px] pb-[32px] flex flex-col gap-[10px] z-50 shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+      {/* Buttons inline at the bottom of scrollable content */}
+      <div className="w-full px-[20px] pb-[40px] pt-[16px] flex flex-col gap-[10px]">
         <button
           onClick={() => setShowModal(true)}
           className="w-full h-[60px] rounded-[30px] bg-[var(--primary-green)] text-white text-[18px] font-bold font-scdream tracking-wide shadow-[0_4px_14px_rgba(0,104,55,0.3)] transition-transform hover:scale-[1.02] flex items-center justify-center gap-2"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-          현장 прин터 출력하기
+          현장 프린터 출력하기
         </button>
         
         <div className="flex gap-[10px]">
@@ -145,6 +145,13 @@ export default function ResultPage({ session }: ResultProps) {
             {savingImage ? '저장 중...' : '이미지 저장'}
           </button>
         </div>
+
+        <button
+          onClick={() => window.location.href = '/'}
+          className="w-full h-[48px] rounded-[24px] bg-transparent text-[var(--primary-green)] text-[15px] font-medium tracking-tight transition-all hover:bg-[#F0F5F2] flex items-center justify-center gap-1"
+        >
+          ← 처음으로 돌아가기
+        </button>
       </div>
 
       {/* Print Info Modal */}

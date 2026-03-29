@@ -105,7 +105,7 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
     return (
       <div 
         ref={ref}
-        className="w-full bg-white font-pretendard flex flex-col items-center pb-[20px]"
+        className="w-full bg-white font-pretendard flex flex-col items-center pb-[20px] overflow-hidden"
       >
         {/* Mobile Header Graphic Box */}
         <div className="w-full bg-[var(--primary-green)] pt-[40px] pb-[30px] rounded-b-[24px] text-center text-white mb-[24px] shadow-sm relative overflow-hidden">

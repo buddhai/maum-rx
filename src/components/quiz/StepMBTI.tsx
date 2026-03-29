@@ -13,7 +13,7 @@ const AXISES = [
   { key: 'JP' as const, left: { val: 'J', label: '계획' }, right: { val: 'P', label: '즉흥' } },
 ]
 
-export default function StepMBTI({ state, setMBTI, onNext }: StepMBTIProps & { onNext: () => void }) {
+export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIProps & { onNext: () => void; onBack: () => void }) {
   // Find first unanswered axis
   const currentAxisIndex = AXISES.findIndex(a => !state.mbti[a.key])
   
@@ -30,6 +30,11 @@ export default function StepMBTI({ state, setMBTI, onNext }: StepMBTIProps & { o
   return (
     <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[59px] pb-[70px] animate-fade-in relative w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
+      {/* Back Button */}
+      <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
+        <span className="text-[18px]">←</span> 뒤로가기
+      </button>
+
       {/* Top Progress Bar - Step 1 of 3 */}
       <div className="flex gap-[12px] mb-[40px] w-full shrink-0">
         <div className="h-[6px] flex-1 rounded-[3px] bg-[var(--primary-green)]" />
