@@ -32,16 +32,15 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
       
       {/* Back Button - arrow only within MBTI, text when going to landing */}
       {activeIndex === 0 ? (
-        <button onClick={onBack} className="self-start mb-[16px] h-[34px] px-[14px] rounded-full bg-[#F0F5F2] text-[var(--primary-green)] text-[14px] font-bold flex items-center gap-1 shrink-0 transition-transform active:scale-95">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          이전 단계
+        <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
+          <span className="text-[18px]">←</span> 뒤로가기
         </button>
       ) : (
         <button
           onClick={() => setMBTI(AXISES[activeIndex - 1].key, '')}
-          className="self-start mb-[16px] w-[34px] h-[34px] rounded-full flex items-center justify-center bg-[#F0F5F2] text-[var(--primary-green)] transition-transform active:scale-95 shrink-0"
+          className="self-start mb-[16px] w-[36px] h-[36px] rounded-full flex items-center justify-center text-[var(--primary-green)] text-[20px] hover:bg-[#F0F5F2] transition-all shrink-0"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          ←
         </button>
       )}
 
@@ -77,8 +76,8 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
         })}
       </div>
 
-      {/* Bottom Indicators (The 4 small boxes) */}
-      <div className="flex justify-center gap-[5px] mt-auto">
+      {/* Bottom Indicators (Premium Segmented Control Pill) */}
+      <div className="flex justify-between items-center bg-[#F0F5F2] rounded-full p-[6px] mt-auto mb-[20px] w-full max-w-[280px] mx-auto shadow-inner">
         {AXISES.map((axis, i) => {
           const selectedVal = state.mbti[axis.key]
           const isActive = i === activeIndex
@@ -87,16 +86,16 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
             <button 
               key={axis.key}
               onClick={() => setMBTI(axis.key, '')} // Resetting allows going back
-              className={`w-[40.5px] h-[44px] rounded-[3.5px] border-[1.5px] border-[var(--primary-green)] flex items-center justify-center text-[20px] font-bold transition-all duration-300 ${
+              className={`w-[50px] h-[50px] rounded-full flex items-center justify-center text-[22px] font-bold transition-all duration-300 ${
                 selectedVal 
-                  ? 'bg-[var(--primary-green)] text-white' 
+                  ? 'bg-[var(--primary-green)] text-white shadow-md transform scale-[1.05]' 
                   : isActive
-                    ? 'bg-[#E8F3EE] text-[var(--primary-green)]'
-                    : 'bg-white text-[var(--primary-green)] opacity-50'
+                    ? 'bg-white text-[var(--primary-green)] shadow-sm'
+                    : 'bg-transparent text-[var(--sage)] opacity-50 hover:bg-white hover:opacity-100'
               }`}
               style={{ fontFamily: 'var(--font-scdream)' }}
             >
-              {selectedVal || ''}
+              {selectedVal || '·'}
             </button>
           )
         })}
