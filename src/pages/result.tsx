@@ -23,19 +23,19 @@ export default function ResultPage() {
   const [session, setSession] = useState<SessionData | null>(null)
 
   useEffect(() => {
-    if (!router.isReady) return
-    const { data } = router.query
-    if (!data || typeof data !== 'string') {
+    // Read from sessionStorage (set by saving.tsx)
+    const stored = sessionStorage.getItem('rx_result')
+    if (!stored) {
       router.replace('/')
       return
     }
     try {
-      const parsed = JSON.parse(decodeURIComponent(data))
+      const parsed = JSON.parse(stored) as SessionData
       setSession(parsed)
     } catch {
       router.replace('/')
     }
-  }, [router.isReady, router.query, router])
+  }, [router])
 
   if (!session) return null
 

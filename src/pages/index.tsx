@@ -11,7 +11,7 @@ export default function Home() {
         <meta name="description" content="나만의 불교 명상/차/인센스 처방받기" />
       </Head>
 
-      <div style={{ position: 'relative', width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+      <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', overflow: 'hidden' }}>
         <div style={{ 
           position: 'relative', 
           width: '100%', 
