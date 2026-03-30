@@ -76,8 +76,8 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
         })}
       </div>
 
-      {/* Bottom Indicators (Premium Segmented Control Pill) */}
-      <div className="flex justify-between items-center bg-[#F0F5F2] rounded-full p-[6px] mt-auto mb-[20px] w-full max-w-[280px] mx-auto shadow-inner">
+      {/* Bottom Indicators (Original Square Boxes) */}
+      <div className="flex justify-center gap-[8px] mt-auto mb-[20px]">
         {AXISES.map((axis, i) => {
           const selectedVal = state.mbti[axis.key]
           const isActive = i === activeIndex
@@ -86,16 +86,16 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
             <button 
               key={axis.key}
               onClick={() => setMBTI(axis.key, '')} // Resetting allows going back
-              className={`w-[50px] h-[50px] rounded-full flex items-center justify-center text-[22px] font-bold transition-all duration-300 ${
+              className={`w-[44px] h-[44px] rounded-[4px] border-[1.5px] border-[var(--primary-green)] flex items-center justify-center text-[20px] font-bold transition-all duration-300 ${
                 selectedVal 
-                  ? 'bg-[var(--primary-green)] text-white shadow-md transform scale-[1.05]' 
+                  ? 'bg-white text-[var(--primary-green)]' 
                   : isActive
-                    ? 'bg-white text-[var(--primary-green)] shadow-sm'
-                    : 'bg-transparent text-[var(--sage)] opacity-50 hover:bg-white hover:opacity-100'
+                    ? 'bg-white text-[var(--primary-green)] border-[2px]'
+                    : 'bg-white text-[var(--primary-green)] opacity-40'
               }`}
               style={{ fontFamily: 'var(--font-scdream)' }}
             >
-              {selectedVal || '·'}
+              {selectedVal || ''}
             </button>
           )
         })}

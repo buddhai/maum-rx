@@ -42,7 +42,7 @@ export default function StepReason({ setReason, setFreeText, onSubmit, onBack }:
       </p>
 
       {/* 4 Reasons vertical list (Dynamically fills vertical space) */}
-      <div className="flex flex-col gap-[12px] flex-1 min-h-0 w-full mb-[12px]">
+      <div className="flex flex-col gap-[16px] flex-1 min-h-0 w-full mb-[12px]">
         {REASONS.map(key => {
           const isSelected = selected === key
           return (
