@@ -77,22 +77,15 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
       </div>
 
       {/* Bottom Indicators (Original Square Boxes) */}
-      <div className="flex justify-center gap-[8px] mt-auto mb-[20px]">
-        {AXISES.map((axis, i) => {
+      <div className="flex justify-center gap-[5px] mt-auto mb-[20px]">
+        {AXISES.map((axis) => {
           const selectedVal = state.mbti[axis.key]
-          const isActive = i === activeIndex
           
           return (
             <button 
               key={axis.key}
               onClick={() => setMBTI(axis.key, '')} // Resetting allows going back
-              className={`w-[44px] h-[44px] rounded-[4px] border-[1.5px] border-[var(--primary-green)] flex items-center justify-center text-[20px] font-bold transition-all duration-300 ${
-                selectedVal 
-                  ? 'bg-white text-[var(--primary-green)]' 
-                  : isActive
-                    ? 'bg-white text-[var(--primary-green)] border-[2px]'
-                    : 'bg-white text-[var(--primary-green)] opacity-40'
-              }`}
+              className="w-[41px] h-[44px] rounded-[4px] border border-[var(--primary-green)] flex items-center justify-center text-[24px] font-bold bg-white text-[var(--primary-green)] transition-all duration-200 shrink-0"
               style={{ fontFamily: 'var(--font-scdream)' }}
             >
               {selectedVal || ''}
