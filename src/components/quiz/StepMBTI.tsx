@@ -32,15 +32,16 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
       
       {/* Back Button - arrow only within MBTI, text when going to landing */}
       {activeIndex === 0 ? (
-        <button onClick={onBack} className="self-start mb-[16px] text-[var(--primary-green)] text-[15px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
-          <span className="text-[18px]">←</span> 뒤로가기
+        <button onClick={onBack} className="self-start mb-[16px] h-[34px] px-[14px] rounded-full bg-[#F0F5F2] text-[var(--primary-green)] text-[14px] font-bold flex items-center gap-1 shrink-0 transition-transform active:scale-95">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          이전 단계
         </button>
       ) : (
         <button
           onClick={() => setMBTI(AXISES[activeIndex - 1].key, '')}
-          className="self-start mb-[16px] w-[36px] h-[36px] rounded-full flex items-center justify-center text-[var(--primary-green)] text-[20px] hover:bg-[#F0F5F2] transition-all shrink-0"
+          className="self-start mb-[16px] w-[34px] h-[34px] rounded-full flex items-center justify-center bg-[#F0F5F2] text-[var(--primary-green)] transition-transform active:scale-95 shrink-0"
         >
-          ←
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
       )}
 

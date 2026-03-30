@@ -23,8 +23,9 @@ export default function StepReason({ setReason, setFreeText, onSubmit, onBack }:
     <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[44px] pb-[24px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
       {/* Back Button */}
-      <button onClick={onBack} className="self-start mb-[8px] text-[var(--primary-green)] text-[14px] font-medium flex items-center gap-1 shrink-0 hover:opacity-70 transition-opacity">
-        <span className="text-[18px]">←</span> 뒤로가기
+      <button onClick={onBack} className="self-start mb-[16px] h-[34px] px-[14px] rounded-full bg-[#F0F5F2] text-[var(--primary-green)] text-[14px] font-bold flex items-center gap-1 shrink-0 transition-transform active:scale-95">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        이전 단계
       </button>
 
       {/* Top Progress Bar - Step 3 of 3 */}
