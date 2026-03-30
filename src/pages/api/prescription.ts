@@ -9,11 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).end()
 
   const {
-    kakaoId, kakaoName,
     mbti, concern, reason, freeText,
   }: {
-    kakaoId: string
-    kakaoName: string
     mbti: MBTIAnswers
     concern: Concern
     reason: Reason
@@ -87,8 +84,6 @@ MBTI: ${mbtiStr}
     )
     const result = await Promise.race([
       saveRxSession({
-        kakaoId,
-        kakaoName,
         mbti: mbtiStr,
         concern,
         reason,

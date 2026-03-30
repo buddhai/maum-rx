@@ -34,9 +34,7 @@ export default function SavingPage() {
           mbti: mbtiObj,
           concern: decoded.c || '번아웃',
           reason: decoded.r || '편안해지고싶어서',
-          freeText: '',
-          kakaoId: decoded.k_id || null,
-          kakaoName: decoded.k_name || null
+          freeText: ''
         }
 
         // Try API with timeout

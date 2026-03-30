@@ -23,8 +23,6 @@ export interface Prescription {
 export interface RxSession {
   id: string           // 문서 ID
   code: string         // 4자리 출력 코드 (예: A3K7)
-  kakaoId: string
-  kakaoName: string
   mbti: string
   concern: Concern
   reason: Reason

@@ -59,13 +59,6 @@ export default function ResultPage() {
     }
   }
 
-  const handleKakao = () => {
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID
-    const redirectUri = `${window.location.origin}/api/auth/kakao/callback`
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${session.code}`
-    window.location.href = kakaoAuthUrl
-  }
-
   return (
     <MobileLayout bg="white">
       <Head>
@@ -97,22 +90,13 @@ export default function ResultPage() {
             현장 프린터 출력하기
           </button>
           
-          <div className="flex gap-[10px]">
-            <button
-              onClick={handleKakao}
-              className="flex-1 h-[48px] rounded-[14px] bg-[#FEE500] text-[#000000] text-[15px] font-bold tracking-tight transition-transform hover:scale-[1.02] flex items-center justify-center gap-1.5"
-            >
-              카카오톡 공유
-            </button>
-            
-            <button
-              onClick={handleSaveImage}
-              disabled={savingImage}
-              className="flex-1 h-[48px] rounded-[14px] bg-[#F0F5F2] text-[var(--primary-green)] text-[15px] font-bold tracking-tight transition-transform hover:bg-[#E0EBE4] flex items-center justify-center gap-1.5"
-            >
-              {savingImage ? '저장 중...' : '이미지 저장'}
-            </button>
-          </div>
+          <button
+            onClick={handleSaveImage}
+            disabled={savingImage}
+            className="w-full h-[48px] rounded-[14px] bg-[#F0F5F2] text-[var(--primary-green)] text-[15px] font-bold tracking-tight transition-transform hover:bg-[#E0EBE4] flex items-center justify-center gap-1.5"
+          >
+            {savingImage ? '저장 중...' : '이미지 저장'}
+          </button>
 
           <button
             onClick={() => window.location.href = '/'}
