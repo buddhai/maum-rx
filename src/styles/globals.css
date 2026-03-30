@@ -65,12 +65,21 @@ a {
 .gap-\[12px\] { gap: 12px; }
 .gap-\[20px\] { gap: 20px; }
 .gap-\[24px\] { gap: 24px; }
+.gap-4 { gap: 16px; }
+.gap-\[5px\] { gap: 5px; }
+.gap-\[8px\] { gap: 8px; }
+.gap-\[14px\] { gap: 14px; }
+.gap-\[16px\] { gap: 16px; }
+.gap-\[18px\] { gap: 18px; }
 
 .grid { display: grid; }
 .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .w-full { width: 100%; }
 .h-full { height: 100%; }
+.w-\[41px\] { width: 41px; }
+.w-\[44px\] { width: 44px; }
+.w-\[50px\] { width: 50px; }
 .h-\[6px\] { height: 6px; }
 .h-\[44px\] { height: 44px; }
 .h-\[52px\] { height: 52px; }
@@ -153,6 +162,8 @@ a {
 
 .rounded-\[3px\] { border-radius: 3px; }
 .rounded-\[3\.5px\] { border-radius: 3.5px; }
+.rounded-\[4px\] { border-radius: 4px; }
+.rounded-\[12px\] { border-radius: 12px; }
 .rounded-\[10px\] { border-radius: 10px; }
 .rounded-\[12px\] { border-radius: 12px; }
 .rounded-\[16px\] { border-radius: 16px; }
@@ -210,6 +221,11 @@ a {
 
 .break-keep { word-break: keep-all; }
 .resize-none { resize: none; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+.hover\:opacity-70:hover { opacity: 0.7; }
+.hover\:bg-\[\#F0F5F2\]:hover { background-color: #F0F5F2; }
 
 /* Existing Animations */
 @keyframes fadeIn {
