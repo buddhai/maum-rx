@@ -77,7 +77,7 @@ export default function StepMBTI({ state, setMBTI, onNext, onBack }: StepMBTIPro
       </div>
 
       {/* Bottom Indicators (The 4 small boxes) */}
-      <div className="flex justify-center gap-[5px] mt-auto">
+      <div className="flex justify-center gap-[12px] mt-auto mb-[20px]">
         {AXISES.map((axis, i) => {
           const selectedVal = state.mbti[axis.key]
           const isActive = i === activeIndex
