@@ -41,7 +41,7 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
       <p className="text-[14px] text-[var(--primary-green)] mb-4 tracking-tight opacity-90 shrink-0">지금 가장 마음에 걸리는 것은 무엇인가요?</p>
 
       {/* 6 Cards Grid (Dynamically fills vertical space) */}
-      <div className="grid grid-cols-2 grid-rows-3 gap-[18px] flex-1 min-h-0 w-full mb-[12px]">
+      <div className="grid grid-cols-2 grid-rows-3 gap-4 flex-1 min-h-0 w-full mb-[12px]">
         {CONCERNS.map(({ key, icon }) => {
           const isSelected = selected === key
           const iconColor = isSelected ? '#ffffff' : '#006838'
