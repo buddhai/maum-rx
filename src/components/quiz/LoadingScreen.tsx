@@ -1,6 +1,7 @@
 export default function LoadingScreen() {
   return (
-    <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[59px] pb-[40px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
+    <div className="bg-white min-h-[100dvh]">
+      <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[44px] pb-[40px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
       {/* Top Progress Bar - 3 Full Bars for loading state */}
       <div className="flex gap-[12px] mb-auto w-full shrink-0">
@@ -39,6 +40,7 @@ export default function LoadingScreen() {
         <h2 className="text-[20px] font-bold text-[var(--primary-green)] leading-snug tracking-tight font-scdream">
           맞춤형 마음처방전을<br/>작성하고 있어요...
         </h2>
+      </div>
       </div>
     </div>
   )
