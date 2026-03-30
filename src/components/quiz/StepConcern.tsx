@@ -47,7 +47,7 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
             <button
               key={key}
               onClick={() => setSelected(key)}
-              className={`h-[149px] rounded-[10px] border-[1.5px] border-[var(--primary-green)] flex flex-col items-center justify-center transition-all duration-200 ${
+              className={`h-[115px] rounded-[10px] border-[1.5px] border-[var(--primary-green)] flex flex-col items-center justify-center transition-all duration-200 ${
                 isSelected 
                   ? 'bg-[var(--primary-green)] text-white shadow-md transform scale-[1.02]' 
                   : 'bg-white text-[var(--primary-green)] hover:bg-[#F0F5F2]'
