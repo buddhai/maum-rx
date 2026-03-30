@@ -22,7 +22,7 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
   const [selected, setSelected] = useState<Concern | null>(state.concern || null)
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[44px] pb-[24px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
+    <div className="flex flex-col h-[100dvh] bg-white px-[20px] pt-[59px] pb-[40px] animate-fade-in relative z-10 w-full" style={{ maxWidth: '375px', margin: '0 auto' }}>
       
       {/* Back Button */}
       <button onClick={onBack} className="self-start mb-[16px] h-[34px] px-[14px] rounded-full bg-[#F0F5F2] text-[var(--primary-green)] text-[14px] font-bold flex items-center gap-1 shrink-0 transition-transform active:scale-95">
@@ -31,14 +31,14 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
       </button>
 
       {/* Top Progress Bar - Step 2 of 3 */}
-      <div className="flex gap-[12px] mb-[20px] w-full shrink-0">
+      <div className="flex gap-[12px] mb-[40px] w-full shrink-0">
         <div className="h-[6px] flex-1 rounded-[3px] bg-[var(--primary-green)]" />
         <div className="h-[6px] flex-1 rounded-[3px] bg-[var(--primary-green)]" />
         <div className="h-[6px] flex-1 rounded-[3px] bg-[var(--border)]" />
       </div>
 
-      <h2 className="text-[24px] font-bold text-[var(--primary-green)] mb-1 leading-tight tracking-tight font-scdream shrink-0">요즘 나의 고민</h2>
-      <p className="text-[14px] text-[var(--primary-green)] mb-4 tracking-tight opacity-90 shrink-0">지금 가장 마음에 걸리는 것은 무엇인가요?</p>
+      <h2 className="text-[28px] font-bold text-[var(--primary-green)] mb-2 leading-tight tracking-tight font-scdream shrink-0">요즘 나의 고민</h2>
+      <p className="text-[15px] text-[var(--primary-green)] mb-6 tracking-tight opacity-90 shrink-0">지금 가장 마음에 걸리는 것은 무엇인가요?</p>
 
       {/* 6 Cards Grid */}
       <div className="grid grid-cols-2 gap-[9px] mb-auto overflow-y-auto w-full">
@@ -48,14 +48,14 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
             <button
               key={key}
               onClick={() => setSelected(key)}
-              className={`h-[120px] rounded-[10px] border-[1.5px] border-[var(--primary-green)] flex flex-col items-center justify-center transition-all duration-200 ${
+              className={`h-[115px] rounded-[10px] border-[1.5px] border-[var(--primary-green)] flex flex-col items-center justify-center transition-all duration-200 ${
                 isSelected 
                   ? 'bg-[var(--primary-green)] text-white shadow-md transform scale-[1.02]' 
                   : 'bg-white text-[var(--primary-green)] hover:bg-[#F0F5F2]'
               }`}
             >
-              <div className="text-[32px] mb-2 transition-transform duration-200" style={{ filter: isSelected ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' : 'none' }}>{icon}</div>
-              <div className={`text-[14px] font-bold tracking-tight ${isSelected ? 'text-white' : 'text-[var(--primary-green)]'}`}>{CONCERN_LABELS[key]}</div>
+              <div className="text-[40px] mb-3 transition-transform duration-200" style={{ filter: isSelected ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' : 'none' }}>{icon}</div>
+              <div className={`text-[16px] font-bold tracking-tight ${isSelected ? 'text-white' : 'text-[var(--primary-green)]'}`}>{CONCERN_LABELS[key]}</div>
             </button>
           )
         })}
@@ -67,7 +67,7 @@ export default function StepConcern({ state, onNext, onBack }: StepConcernProps)
           if (selected) onNext(selected)
         }}
         disabled={!selected}
-        className={`mt-4 w-full h-[52px] shrink-0 rounded-[26px] text-[16px] font-bold font-scdream transition-all duration-300 ${
+        className={`mt-6 w-full h-[60px] shrink-0 rounded-[30px] text-[18px] font-bold font-scdream transition-all duration-300 ${
           selected 
             ? 'bg-[var(--primary-green)] text-white shadow-lg'
             : 'bg-[var(--border)] text-[#999999]'
