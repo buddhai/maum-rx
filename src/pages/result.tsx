@@ -162,39 +162,37 @@ export default function ResultPage() {
         </div>
       )}
 
-      {/* Download Modal for iOS/Kakao */}
+      {/* Download Modal - Simplified for QR Scanner users */}
       {downloadModalUrl && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-80 z-[200] flex flex-col items-center justify-center p-[20px] animate-fade-in backdrop-blur-sm"
+          className="fixed inset-0 bg-black bg-opacity-80 z-[200] flex flex-col items-center justify-center p-[24px] animate-fade-in backdrop-blur-sm"
           onClick={() => setDownloadModalUrl(null)}
         >
-          <div className="bg-white rounded-[16px] overflow-hidden w-full max-w-[340px] shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="bg-[var(--primary-green)] text-white text-center py-[16px]">
-              <h3 className="text-[18px] font-bold font-scdream">이미지 저장 안내</h3>
-              <p className="text-[14px] opacity-90 mt-1.5 break-keep">
-                아래 <strong>[이미지 다운로드]</strong> 버튼을 누르거나<br/>이미지를 <strong>꾹 눌러서</strong> 저장해주세요.
+          <div className="bg-white rounded-[24px] overflow-hidden w-full max-w-[320px] shadow-2xl p-[32px] text-center" onClick={e => e.stopPropagation()}>
+            <div className="mb-[28px]">
+              <div className="w-[64px] h-[64px] bg-[#E8F3EE] text-[var(--primary-green)] rounded-full flex items-center justify-center mx-auto mb-[20px]">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </div>
+              <h3 className="text-[22px] font-bold text-[var(--primary-green)] font-scdream mb-[8px]">이미지 준비 완료!</h3>
+              <p className="text-[15px] text-gray-600 break-keep leading-relaxed">
+                아래 버튼을 눌러 마음처방전을<br/>갤러리에 저장해주세요.
               </p>
             </div>
-            <div className="p-[20px] bg-[#F0F5F2] flex justify-center max-h-[50vh] overflow-y-auto">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src={downloadModalUrl} 
-                alt="마음처방전" 
-                className="w-full max-w-[85%] h-auto object-contain rounded-[8px] shadow-sm border border-gray-200" 
-                style={{ WebkitTouchCallout: 'default' }} // Ensure long press works on iOS Safari
-              />
-            </div>
-            <div className="p-[16px] flex flex-col gap-[8px]">
+            
+            <div className="flex flex-col gap-[12px]">
               <a
                 href={downloadModalUrl}
                 download={`마음처방전_${session.code}.jpg`}
-                className="w-full h-[52px] rounded-[12px] bg-[var(--primary-green)] text-white text-[16px] font-bold flex items-center justify-center shadow-md transition-transform hover:scale-[1.02]"
+                className="w-full h-[56px] rounded-[16px] bg-[var(--primary-green)] text-white text-[16px] font-bold flex items-center justify-center shadow-lg transition-transform hover:scale-[1.02]"
+                onClick={() => {
+                  setTimeout(() => setDownloadModalUrl(null), 1000);
+                }}
               >
                 이미지 다운로드
               </a>
               <button
                 onClick={() => setDownloadModalUrl(null)}
-                className="w-full h-[52px] rounded-[12px] bg-gray-200 text-gray-800 text-[16px] font-bold transition-all hover:bg-gray-300"
+                className="w-full h-[56px] rounded-[16px] bg-transparent text-gray-400 text-[15px] font-medium transition-all hover:text-gray-600"
               >
                 닫기
               </button>
