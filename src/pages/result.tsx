@@ -45,18 +45,32 @@ export default function ResultPage() {
   const handleSaveImage = async () => {
     if (!printRef.current) return
     setSavingImage(true)
+    
+    // 모바일(특히 iOS Safari)에서 html2canvas가 스크롤 위치를 잘못 계산하여
+    // 이미지를 확대/자르기(Crop)해버리는 심각한 버그를 방지하기 위해 컨테이너 스크롤을 임시로 위로 올립니다.
+    const scrollContainer = document.querySelector('.overflow-y-auto');
+    const prevScroll = scrollContainer ? scrollContainer.scrollTop : 0;
+    if (scrollContainer) {
+      scrollContainer.scrollTop = 0;
+    }
+
     try {
       // 폰트 렌더링 등 완료 보장을 위한 약간의 지연
       await new Promise(r => setTimeout(r, 100));
-      const canvas = await html2canvas(printRef.current, { scale: 2, backgroundColor: '#FFF8F0' })
+      
+      const canvas = await html2canvas(printRef.current, { 
+        scale: 2, 
+        backgroundColor: '#FFF8F0',
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+      })
       const image = canvas.toDataURL('image/jpeg', 0.9)
       
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi/i.test(navigator.userAgent) || navigator.maxTouchPoints > 2;
       const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
       const isInsta = /Instagram/i.test(navigator.userAgent);
 
-      // 최신 안드로이드(갤럭시 S26 등)나 삼성 인터넷, iOS, 인앱 브라우저 보안 정책상
-      // 비동기 실행 a.download가 무음으로 차단되거나 실패하는 경우가 잦습니다.
       // 모바일 기기는 무조건 모달을 띄워 네이티브 OS 기능(꾹 눌러 저장)을 쓰도록 유도합니다.
       if (isMobile || isKakao || isInsta) {
         setDownloadModalUrl(image)
@@ -70,6 +84,9 @@ export default function ResultPage() {
       console.error(err)
       alert("이미지 생성에 실패했습니다.")
     } finally {
+      if (scrollContainer) {
+        scrollContainer.scrollTop = prevScroll; // 스크롤 원복
+      }
       setSavingImage(false)
     }
   }
@@ -163,7 +180,7 @@ export default function ResultPage() {
               <img 
                 src={downloadModalUrl} 
                 alt="마음처방전" 
-                className="w-[85%] rounded-[8px] shadow-sm border border-gray-200" 
+                className="w-full max-w-[85%] h-auto object-contain rounded-[8px] shadow-sm border border-gray-200" 
                 style={{ WebkitTouchCallout: 'default' }} // Ensure long press works on iOS Safari
               />
             </div>
