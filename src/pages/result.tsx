@@ -51,23 +51,20 @@ export default function ResultPage() {
       const canvas = await html2canvas(printRef.current, { scale: 2, backgroundColor: '#FFF8F0' })
       const image = canvas.toDataURL('image/jpeg', 0.9)
       
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi/i.test(navigator.userAgent) || navigator.maxTouchPoints > 2;
       const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
       const isInsta = /Instagram/i.test(navigator.userAgent);
 
-      // 아이폰이나 인앱 브라우저(카카오톡, 인스타)의 경우 a.download 가 막히거나
-      // 비동기 실행으로 인한 보안 정책에 막힙니다. 따라서 모달을 띄워 꾹 눌러 저장하게 유도합니다.
-      if (isIOS || isKakao || isInsta) {
+      // 최신 안드로이드(갤럭시 S26 등)나 삼성 인터넷, iOS, 인앱 브라우저 보안 정책상
+      // 비동기 실행 a.download가 무음으로 차단되거나 실패하는 경우가 잦습니다.
+      // 모바일 기기는 무조건 모달을 띄워 네이티브 OS 기능(꾹 눌러 저장)을 쓰도록 유도합니다.
+      if (isMobile || isKakao || isInsta) {
         setDownloadModalUrl(image)
       } else {
         const link = document.createElement('a')
         link.href = image
         link.download = `마음처방전_${session.code}.jpg`
         link.click()
-        // Fallback for Android webviews just in case click() fails silently
-        setTimeout(() => {
-          if (document.hidden) return; // If download started, document might lose focus sometimes
-        }, 500);
       }
     } catch (err) {
       console.error(err)
