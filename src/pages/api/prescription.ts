@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import {
-  PRESCRIPTIONS, DEFAULT_AI_LINES, MBTI_MODIFIERS,
+  PRESCRIPTIONS, DEFAULT_AI_LINES, MBTI_MODIFIERS, generateCode,
   type Concern, type Reason, type MBTIAnswers
 } from '@/lib/prescriptions'
 import { saveRxSession } from '@/lib/db'
@@ -74,9 +74,7 @@ MBTI: ${mbtiStr}
   let code = ''
 
   // Generate a local fallback code
-  const prefixes = ['연꽃의', '자비의', '지혜의', '보리의', '인연의', '무상의', '선정의', '공덕의']
-  const suffixes = ['해탈', '보살', '선정', '공덕', '열반', '반야', '자비', '지혜']
-  const fallbackCode = prefixes[Math.floor(Math.random() * prefixes.length)] + ' ' + suffixes[Math.floor(Math.random() * suffixes.length)]
+  const fallbackCode = generateCode()
 
   try {
     const timeoutPromise = new Promise<never>((_, reject) =>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import LoadingScreen from '@/components/quiz/LoadingScreen'
-import { DEFAULT_AI_LINES } from '@/lib/prescriptions'
+import { DEFAULT_AI_LINES, generateCode } from '@/lib/prescriptions'
 import type { Concern } from '@/lib/prescriptions'
 
 export default function SavingPage() {
@@ -66,9 +66,7 @@ export default function SavingPage() {
           // API failed — build locally
           const tf = mbtiStr[2] as 'T' | 'F'
           aiLine = DEFAULT_AI_LINES[concern as Concern]?.[tf] || '지금 이 자리에 와주신 것만으로도, 당신은 이미 자신을 돌보고 있습니다.'
-          const prefixes = ['연꽃의', '자비의', '지혜의', '보리의', '인연의', '무상의', '선정의', '공덕의']
-          const suffixes = ['해탈', '보살', '선정', '공덕', '열반', '반야', '자비', '지혜']
-          code = prefixes[Math.floor(Math.random() * prefixes.length)] + ' ' + suffixes[Math.floor(Math.random() * suffixes.length)]
+          code = generateCode()
         }
 
         // Save to sessionStorage (more reliable than URL params for large data)

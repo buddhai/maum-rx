@@ -242,25 +242,31 @@ export const DEFAULT_AI_LINES: Record<Concern, Record<'T' | 'F', string>> = {
   },
 }
 
-// ── 코드 생성 (불교 한글 조합: "XXX의 YY") ──────────────────
-// 앞 단어 (3글자) × 뒤 단어 (2글자) = 최대 400가지 조합
-const CODE_PREFIX = [
+// ── 코드 생성 (불교 한글 조합: 3글자 + 2글자) ──────────────────
+// 앞 단어 (3글자) × 뒤 단어 (2글자) = 30 × 30 = 900가지 조합 (500개 조건 만족)
+export const CODE_PREFIX = [
   '연꽃의', '자비의', '지혜의', '보리의', '인연의', '무상의',
   '선정의', '공덕의', '법계의', '청정의', '원력의', '서원의',
   '해탈의', '열반의', '반야의', '정토의', '불심의', '묘법의',
-  '자등의', '각성의',
+  '자등의', '각성의', '평화의', '평정의', '자재의', '무아의',
+  '관조의', '정념의', '초월의', '불성의', '여여의', '정심의'
 ]
-const CODE_SUFFIX = [
+
+export const CODE_SUFFIX = [
   '해탈', '보살', '선정', '공덕', '열반', '반야',
   '자비', '지혜', '보리', '인연', '원력', '청정',
   '법계', '서원', '묘법', '정토', '각성', '불심',
-  '연꽃', '무상',
+  '연꽃', '무상', '평화', '평정', '자재', '무아',
+  '관조', '정념', '초월', '불성', '여여', '정심'
 ]
 
 export function generateCode(): string {
   const prefix = CODE_PREFIX[Math.floor(Math.random() * CODE_PREFIX.length)]
   const suffix = CODE_SUFFIX[Math.floor(Math.random() * CODE_SUFFIX.length)]
+  
+  // 앞뒤 단어가 같으면 다시 뽑기 (예: 지혜의 지혜)
   if (prefix.replace('의', '') === suffix) return generateCode()
+  
   return `${prefix} ${suffix}`
 }
 
