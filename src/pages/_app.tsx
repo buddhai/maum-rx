@@ -30,7 +30,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>마음처방전</title>
+        <title>마음처방전, 선명상(SEON MEDITATION)</title>
+        <meta property="og:title" content="마음처방전, 선명상(SEON MEDITATION)" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
       <main className={`${pretendard.variable} ${scDream.variable}`}>

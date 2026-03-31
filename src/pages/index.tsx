@@ -7,8 +7,10 @@ export default function Home() {
   return (
     <MobileLayout>
       <Head>
-        <title>마음처방전 | 2026 서울국제불교박람회</title>
+        <title>마음처방전, 선명상(SEON MEDITATION)</title>
         <meta name="description" content="나만의 불교 명상/차/인센스 처방받기" />
+        <meta property="og:title" content="마음처방전, 선명상(SEON MEDITATION)" />
+        <meta property="og:description" content="나만의 불교 명상/차/인센스 처방받기" />
       </Head>
 
       <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', overflow: 'hidden' }}>
