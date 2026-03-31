@@ -155,19 +155,26 @@ export default function ResultPage() {
             <div className="bg-[var(--primary-green)] text-white text-center py-[16px]">
               <h3 className="text-[18px] font-bold font-scdream">이미지 저장 안내</h3>
               <p className="text-[14px] opacity-90 mt-1.5 break-keep">
-                아래 이미지를 <strong>꾹 눌러서</strong><br/>[&apos;사진 앱에 저장&apos;]을 선택해주세요.
+                아래 <strong>[이미지 다운로드]</strong> 버튼을 누르거나<br/>이미지를 <strong>꾹 눌러서</strong> 저장해주세요.
               </p>
             </div>
-            <div className="p-[20px] bg-[#F0F5F2] flex justify-center max-h-[60vh] overflow-y-auto">
+            <div className="p-[20px] bg-[#F0F5F2] flex justify-center max-h-[50vh] overflow-y-auto">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 src={downloadModalUrl} 
                 alt="마음처방전" 
-                className="w-[90%] rounded-[8px] shadow-sm border border-gray-200" 
+                className="w-[85%] rounded-[8px] shadow-sm border border-gray-200" 
                 style={{ WebkitTouchCallout: 'default' }} // Ensure long press works on iOS Safari
               />
             </div>
-            <div className="p-[16px]">
+            <div className="p-[16px] flex flex-col gap-[8px]">
+              <a
+                href={downloadModalUrl}
+                download={`마음처방전_${session.code}.jpg`}
+                className="w-full h-[52px] rounded-[12px] bg-[var(--primary-green)] text-white text-[16px] font-bold flex items-center justify-center shadow-md transition-transform hover:scale-[1.02]"
+              >
+                이미지 다운로드
+              </a>
               <button
                 onClick={() => setDownloadModalUrl(null)}
                 className="w-full h-[52px] rounded-[12px] bg-gray-200 text-gray-800 text-[16px] font-bold transition-all hover:bg-gray-300"
