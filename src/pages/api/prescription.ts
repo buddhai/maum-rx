@@ -76,9 +76,10 @@ MBTI: ${mbtiStr}
   // Generate a local fallback code
   const fallbackCode = generateCode()
 
+  let dbError = ''
   try {
     const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('DB timeout')), 5000)
+      setTimeout(() => reject(new Error('DB timeout after 10s')), 10000)
     )
     const result = await Promise.race([
       saveRxSession({
@@ -93,11 +94,12 @@ MBTI: ${mbtiStr}
     ])
     id = result.id
     code = result.code
-  } catch {
+  } catch (err) {
     // DB failed or timed out — use fallback code
+    dbError = err instanceof Error ? err.message : String(err)
     code = fallbackCode
-    console.error('Firestore save failed, using fallback code:', code)
+    console.error('Firestore save failed:', dbError)
   }
 
-  return res.status(200).json({ id, code, aiLine, prescription, mbtiStr })
+  return res.status(200).json({ id, code, aiLine, prescription, mbtiStr, dbError: dbError || undefined })
 }
