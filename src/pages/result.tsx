@@ -20,6 +20,7 @@ export default function ResultPage() {
   const printRef = useRef<HTMLDivElement>(null)
   const [savingImage, setSavingImage] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [downloadModalUrl, setDownloadModalUrl] = useState<string | null>(null)
   const [session, setSession] = useState<SessionData | null>(null)
 
   useEffect(() => {
@@ -45,15 +46,32 @@ export default function ResultPage() {
     if (!printRef.current) return
     setSavingImage(true)
     try {
+      // 폰트 렌더링 등 완료 보장을 위한 약간의 지연
+      await new Promise(r => setTimeout(r, 100));
       const canvas = await html2canvas(printRef.current, { scale: 2, backgroundColor: '#FFF8F0' })
       const image = canvas.toDataURL('image/jpeg', 0.9)
-      const link = document.createElement('a')
-      link.href = image
-      link.download = `마음처방전_${session.code}.jpg`
-      link.click()
+      
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
+      const isInsta = /Instagram/i.test(navigator.userAgent);
+
+      // 아이폰이나 인앱 브라우저(카카오톡, 인스타)의 경우 a.download 가 막히거나
+      // 비동기 실행으로 인한 보안 정책에 막힙니다. 따라서 모달을 띄워 꾹 눌러 저장하게 유도합니다.
+      if (isIOS || isKakao || isInsta) {
+        setDownloadModalUrl(image)
+      } else {
+        const link = document.createElement('a')
+        link.href = image
+        link.download = `마음처방전_${session.code}.jpg`
+        link.click()
+        // Fallback for Android webviews just in case click() fails silently
+        setTimeout(() => {
+          if (document.hidden) return; // If download started, document might lose focus sometimes
+        }, 500);
+      }
     } catch (err) {
       console.error(err)
-      alert("이미지 저장에 실패했습니다.")
+      alert("이미지 생성에 실패했습니다.")
     } finally {
       setSavingImage(false)
     }
@@ -126,6 +144,40 @@ export default function ResultPage() {
             >
               확인
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Download Modal for iOS/Kakao */}
+      {downloadModalUrl && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-80 z-[200] flex flex-col items-center justify-center p-[20px] animate-fade-in backdrop-blur-sm"
+          onClick={() => setDownloadModalUrl(null)}
+        >
+          <div className="bg-white rounded-[16px] overflow-hidden w-full max-w-[340px] shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="bg-[var(--primary-green)] text-white text-center py-[16px]">
+              <h3 className="text-[18px] font-bold font-scdream">이미지 저장 안내</h3>
+              <p className="text-[14px] opacity-90 mt-1.5 break-keep">
+                아래 이미지를 <strong>꾹 눌러서</strong><br/>[&apos;사진 앱에 저장&apos;]을 선택해주세요.
+              </p>
+            </div>
+            <div className="p-[20px] bg-[#F0F5F2] flex justify-center max-h-[60vh] overflow-y-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={downloadModalUrl} 
+                alt="마음처방전" 
+                className="w-[90%] rounded-[8px] shadow-sm border border-gray-200" 
+                style={{ WebkitTouchCallout: 'default' }} // Ensure long press works on iOS Safari
+              />
+            </div>
+            <div className="p-[16px]">
+              <button
+                onClick={() => setDownloadModalUrl(null)}
+                className="w-full h-[52px] rounded-[12px] bg-gray-200 text-gray-800 text-[16px] font-bold transition-all hover:bg-gray-300"
+              >
+                닫기
+              </button>
+            </div>
           </div>
         </div>
       )}
