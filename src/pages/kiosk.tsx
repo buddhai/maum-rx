@@ -268,14 +268,13 @@ export default function KioskPage() {
 
               {/* Paper Preview */}
               <div style={{
-                width: printSize === 'A4-landscape' ? '297mm' : '210mm',
-                height: printSize === 'A4-landscape' ? '210mm' : '297mm',
+                width: '100%',
+                maxWidth: printSize === 'A4-landscape' ? '900px' : '640px',
+                aspectRatio: printSize === 'A4-landscape' ? '297/210' : '210/297',
                 background: 'white',
                 boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
                 margin: '0 auto',
                 overflow: 'hidden',
-                transform: 'scale(0.7)',
-                transformOrigin: 'top center',
               }}>
                 {prescription && (
                   <PrescriptionCard
