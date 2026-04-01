@@ -101,5 +101,5 @@ MBTI: ${mbtiStr}
     console.error('Firestore save failed:', dbError)
   }
 
-  return res.status(200).json({ id, code, aiLine, prescription, mbtiStr, dbError: dbError || undefined })
+  return res.status(200).json({ id, code, aiLine, prescription, mbtiStr })
 }
