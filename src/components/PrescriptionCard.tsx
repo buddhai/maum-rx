@@ -83,11 +83,11 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
                   <div className="absolute top-[-1px] left-1/2 transform -translate-x-1/2 bg-white px-4 text-[13px] font-bold text-[var(--primary-green)] uppercase tracking-widest pt-1">나만을 위한 한 줄</div>
                   
                   <h2 className="text-[22px] font-black font-scdream text-[var(--primary-green)] mb-6 z-10 leading-snug break-keep">{prescription.typeName}</h2>
-                  <div className="text-[40px] text-[#006838] opacity-20 leading-none mb-2 font-serif z-10">"</div>
+                  <div className="text-[40px] text-[#006838] opacity-20 leading-none mb-2 font-serif z-10">&quot;</div>
                   <p className="text-[19px] leading-[1.6] font-bold text-gray-800 z-10 break-keep">
                     {aiLine}
                   </p>
-                  <div className="text-[40px] text-[#006838] opacity-20 leading-none mt-2 font-serif z-10">"</div>
+                  <div className="text-[40px] text-[#006838] opacity-20 leading-none mt-2 font-serif z-10">&quot;</div>
                 </div>
               </div>
 
