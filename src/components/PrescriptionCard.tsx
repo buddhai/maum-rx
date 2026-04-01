@@ -20,8 +20,9 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
                         reason === '소중한사람때문에' ? '소중한 사람이 있어서' : 
                         reason === '나답게살고싶어서' ? '나답게 살고 싶어서' : '더 성장하고 싶어서'
 
-    const eI = mbtiStr[0] as 'E' | 'I'
-    const jP = mbtiStr[3] as 'J' | 'P'
+    const safeMbti = (mbtiStr || 'INTJ').toUpperCase()
+    const eI = (safeMbti[0] === 'E' ? 'E' : 'I') as 'E' | 'I'
+    const jP = (safeMbti[3] === 'P' ? 'P' : 'J') as 'J' | 'P'
 
     if (isPrintMode) {
       // --- A5 LANDSCAPE PRINT LAYOUT ---
