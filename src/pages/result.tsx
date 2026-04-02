@@ -104,8 +104,8 @@ export default function ResultPage() {
             ref={printRef}
             code={session.code}
             mbtiStr={session.mbtiStr}
-            concern={session.concern}
-            reason={session.reason}
+            concern={session.concern as Concern}
+            reason={session.reason as Reason}
             aiLine={session.aiLine}
             prescription={prescription}
             isPrintMode={false}
