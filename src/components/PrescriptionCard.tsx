@@ -234,43 +234,36 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
       </div>
 
       {/* 6. Logo & Footer (BOTTOM RIGHT) */}
-      <div style={{ position: 'absolute', right: '41px', bottom: '35px', width: '330px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+      <div style={{ position: 'absolute', right: '41px', bottom: '35px', width: '310px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
         {/* Heart Logo */}
-        <img src="/Group.svg" style={{ width: '160px', height: 'auto' }} alt="MIND RX" />
+        <img src="/Group.svg" style={{ width: '130px', height: 'auto', marginBottom: '5px' }} alt="MIND RX" />
         
         {/* Q&A Table */}
         <div style={{ width: '100%', borderTop: '2px solid #006938' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9px', marginTop: '10px' }}>
             <tbody>
               <tr style={{ borderBottom: '1px solid #E6EFEA' }}>
-                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 나를 알려주세요</td>
-                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeMbti}</td>
+                <td style={{ padding: '7px 0', fontWeight: '900' }}>Q. 나를 알려주세요</td>
+                <td style={{ padding: '7px 0', fontWeight: '500', textAlign: 'right' }}>{safeMbti}</td>
               </tr>
               <tr style={{ borderBottom: '1px solid #E6EFEA' }}>
-                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 요즘 나의 고민</td>
-                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeConcern}</td>
+                <td style={{ padding: '7px 0', fontWeight: '900' }}>Q. 요즘 나의 고민</td>
+                <td style={{ padding: '7px 0', fontWeight: '500', textAlign: 'right' }}>{safeConcern}</td>
               </tr>
               <tr>
-                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 이 고민이 내게 중요한 이유</td>
-                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeReason}</td>
+                <td style={{ padding: '7px 0', fontWeight: '900' }}>Q. 이 고민이 내게 중요한 이유</td>
+                <td style={{ padding: '7px 0', fontWeight: '500', textAlign: 'right' }}>{safeReason}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         {/* Issue Date & Visitor */}
-        <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'flex-end', fontSize: '9px', fontWeight: '700', opacity: 0.4, marginTop: '5px' }}>
-          ISSUE DATE: {today} | VISITOR: #{String(visitorCount).padStart(4, '0')}
+        <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', gap: '8px', fontSize: '8px', fontWeight: '700', opacity: 0.4, marginTop: '2px' }}>
+          <span>ISSUE DATE: {today}</span>
+          <span>|</span>
+          <span>VISITOR: #{String(visitorCount).padStart(4, '0')}</span>
         </div>
-      </div>
-
-      {/* Slogan (BOTTOM LEFT Corner) */}
-      <div style={{ position: 'absolute', left: '41px', bottom: '35px', opacity: 0.6 }}>
-        <div style={{ fontSize: '10px', fontWeight: '700', lineHeight: '1.4' }}>
-          당신의 마음을 읽고<br/>선명상의 지혜로<br/>처방드립니다.
-        </div>
-        <div style={{ fontSize: '8px', fontWeight: '900', marginTop: '15px' }}>MIND PRESCRIPTION</div>
-        <div style={{ fontSize: '7px', fontWeight: '700', opacity: 0.5 }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | SEON MEDITATION FESTIVAL</div>
       </div>
 
       {/* Decorative Lines */}
