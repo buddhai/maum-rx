@@ -157,37 +157,43 @@ export default function ResultPage() {
         </div>
       )}
 
-      {/* Download Modal - Simplified for QR Scanner users */}
+      {/* Loading Overlay for Image Generation */}
+      {savingImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 z-[300] flex flex-col items-center justify-center animate-fade-in backdrop-blur-md">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mb-6"></div>
+          <div className="text-white text-[18px] font-black font-scdream tracking-widest">이미지 생성 중...</div>
+          <p className="text-white opacity-60 text-[14px] mt-2">잠시만 기다려주세요</p>
+        </div>
+      )}
+
+      {/* Download Modal - Long Press UX for Mobile */}
       {downloadModalUrl && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-80 z-[200] flex flex-col items-center justify-center p-[24px] animate-fade-in backdrop-blur-sm"
+          className="fixed inset-0 bg-black bg-opacity-90 z-[200] flex flex-col items-center justify-center p-[20px] animate-fade-in backdrop-blur-xl"
           onClick={() => setDownloadModalUrl(null)}
         >
-          <div className="bg-white rounded-[24px] overflow-hidden w-full max-w-[320px] shadow-2xl p-[32px] text-center" onClick={e => e.stopPropagation()}>
-            <div className="mb-[28px]">
-              <div className="w-[64px] h-[64px] bg-[#E8F3EE] text-[var(--primary-green)] rounded-full flex items-center justify-center mx-auto mb-[20px]">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              </div>
-              <h3 className="text-[22px] font-bold text-[var(--primary-green)] font-scdream mb-[8px]">이미지 준비 완료!</h3>
-              <p className="text-[15px] text-gray-600 break-keep leading-relaxed">
-                아래 버튼을 눌러 마음처방전을<br/>갤러리에 저장해주세요.
+          <div className="w-full max-w-[340px] flex flex-col items-center" onClick={e => e.stopPropagation()}>
+            <div className="mb-6 text-center">
+              <h3 className="text-[20px] font-black text-white font-scdream mb-2">이미지 저장 안내</h3>
+              <p className="text-white opacity-70 text-[14px] leading-relaxed break-keep">
+                아래 이미지를 <span className="text-[var(--primary-green)] bg-white px-1.5 py-0.5 rounded-md font-bold">꾹 눌러서</span><br/>
+                &apos;내 휴대폰에 저장&apos;을 눌러주세요.
               </p>
             </div>
             
-            <div className="flex flex-col gap-[12px]">
-              <a
-                href={downloadModalUrl}
-                download={`마음처방전_${session.code}.jpg`}
-                className="w-full h-[56px] rounded-[16px] bg-[var(--primary-green)] text-white text-[16px] font-bold flex items-center justify-center shadow-lg transition-transform hover:scale-[1.02]"
-                onClick={() => {
-                  setTimeout(() => setDownloadModalUrl(null), 1000);
-                }}
-              >
-                이미지 다운로드
-              </a>
+            <div className="relative w-full rounded-[24px] overflow-hidden shadow-2xl border-4 border-white border-opacity-20 mb-8 max-h-[60vh] overflow-y-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={downloadModalUrl} 
+                className="w-full h-auto object-contain bg-white" 
+                alt="마음처방전 결과"
+              />
+            </div>
+
+            <div className="flex flex-col w-full gap-3">
               <button
                 onClick={() => setDownloadModalUrl(null)}
-                className="w-full h-[56px] rounded-[16px] bg-transparent text-gray-400 text-[15px] font-medium transition-all hover:text-gray-600"
+                className="w-full h-[56px] rounded-[20px] bg-white text-[var(--primary-green)] text-[16px] font-black shadow-lg transition-transform hover:scale-105 active:scale-95"
               >
                 닫기
               </button>
