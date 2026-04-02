@@ -151,11 +151,11 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
   }
 
   // ─── [PRINT MODE] ───
-  // 피그마(842x595) 데이터를 기반으로 한 좌표 정밀 배치 SVG 레이아웃 (V4.0 - 최종 정규화)
+  // 피그마(842x595) 데이터를 기반으로 한 최종 정밀 SVG 레이아웃 (V5.0 - ForeignObject 통합형)
   return (
     <div 
       ref={ref} 
-      className="bg-white overflow-hidden shadow-lg p-0 m-0" 
+      className="bg-white overflow-hidden p-0 m-0" 
       style={{ width: '842px', height: '595px', position: 'relative' }}
     >
       <svg 
@@ -166,96 +166,120 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: '100%', height: '100%' }}
       >
-        {/* 전체 배경 및 클리핑 (Figma 정석 구조) */}
         <rect width="842" height="595" fill="white"/>
-        <g clipPath="url(#clip_main)">
+        <g clipPath="url(#clip_final)">
           {/* 가로 용지 배경 */}
           <rect width="595" height="842" transform="matrix(0 1 -1 0 842 0)" fill="white"/>
           
           {/* [섹션 1] 좌측 상단: 결과 분석 박스 (x:41, y:30) */}
           <rect x="41" y="30" width="275" height="157" rx="20" fill="#006938"/>
-          <rect x="108" y="46" width="140" height="24" rx="12" fill="white"/>
-          <text x="178" y="62" textAnchor="middle" fill="#006938" style={{ fontSize: '11px', fontWeight: '900', fontFamily: 'S-Core Dream' }}>PATIENT RESULT</text>
-          
-          <text x="178" y="115" textAnchor="middle" fill="white" style={{ fontSize: '26px', fontWeight: '900', fontFamily: 'S-Core Dream' }}>{safeTypeName}</text>
-          <text x="178" y="152" textAnchor="middle" fill="white" fillOpacity="0.7" style={{ fontSize: '20px', fontWeight: '900', fontFamily: 'monospace', letterSpacing: '4px' }}>{safeMbti}</text>
+          <foreignObject x="41" y="30" width="275" height="157">
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '16px' }}>
+              <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '2px 24px', fontSize: '11px', fontWeight: '900', color: '#006938', marginBottom: '20px', fontFamily: 'S-Core Dream' }}>
+                PATIENT RESULT
+              </div>
+              <div style={{ padding: '0 20px', textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ fontSize: '24px', fontWeight: '900', color: 'white', lineHeight: '1.2', wordBreak: 'keep-all', fontFamily: 'S-Core Dream' }}>
+                  {safeTypeName}
+                </div>
+              </div>
+              <div style={{ fontSize: '20px', fontWeight: '900', color: 'rgba(255,255,255,0.7)', paddingBottom: '16px', fontFamily: 'monospace', letterSpacing: '4px' }}>
+                {safeMbti}
+              </div>
+            </div>
+          </foreignObject>
 
-          {/* [섹션 2] 좌측 하단: 스탬프 영역 (x:41, y:420) */}
-          <rect x="41" y="420" width="140" height="140" rx="70" stroke="#006938" strokeWidth="1" strokeDasharray="4 4" opacity="0.2"/>
-          <text x="111" y="482" textAnchor="middle" fill="#006938" opacity="0.3" style={{ fontSize: '10px', fontWeight: '900' }}>STAMP HERE</text>
-          <text x="111" y="497" textAnchor="middle" fill="#006938" opacity="0.2" style={{ fontSize: '8px', fontWeight: '700' }}>MAUM-RX OFFICE</text>
+          {/* [섹션 2] 좌측 하단: 스탬프 영역 */}
+          <rect x="51" y="430" width="120" height="120" rx="60" stroke="#006938" strokeWidth="1" strokeDasharray="4 4" opacity="0.15"/>
+          <foreignObject x="51" y="430" width="120" height="120">
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#006938', opacity: 0.3 }}>
+              <div style={{ fontSize: '10px', fontWeight: '900' }}>STAMP HERE</div>
+              <div style={{ fontSize: '7px', fontWeight: '700' }}>MAUM-RX OFFICE</div>
+            </div>
+          </foreignObject>
 
           {/* [섹션 3] 중앙 상단: 타이틀 박스 (x:330.5, y:30.5) */}
           <rect x="330.5" y="30.5" width="274" height="156" rx="20" stroke="#006938" strokeWidth="1"/>
-          <rect x="419" y="52" width="97" height="24" rx="12" fill="#006938"/>
-          <text x="467.5" y="68" textAnchor="middle" fill="white" style={{ fontSize: '11px', fontWeight: '900', fontFamily: 'S-Core Dream' }}>PRESCRIPTION</text>
-          <text x="467.5" y="125" textAnchor="middle" fill="#006938" style={{ fontSize: '32px', fontWeight: '900', fontFamily: 'S-Core Dream' }}>마음 처방전</text>
+          <foreignObject x="330.5" y="30.5" width="274" height="156">
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '22px' }}>
+              <div style={{ backgroundColor: '#006938', borderRadius: '12px', padding: '2px 24px', fontSize: '11px', fontWeight: '900', color: 'white', marginBottom: '30px', fontFamily: 'S-Core Dream' }}>
+                PRESCRIPTION
+              </div>
+              <div style={{ fontSize: '32px', fontWeight: '900', color: '#006938', fontFamily: 'S-Core Dream' }}>
+                마음 처방전
+              </div>
+            </div>
+          </foreignObject>
 
-          {/* [섹션 4] 우측 상단: Q&A 박스 (x:618, y:30.5) */}
-          <rect x="618" y="30.5" width="183" height="156" rx="20" stroke="#006938" strokeWidth="1" strokeDasharray="2 2"/>
-          <g transform="translate(635, 60)">
-             <text y="0" fill="#006938" opacity="0.5" style={{ fontSize: '8px', fontWeight: '900' }}>Q. 나를 알려주세요</text>
-             <text y="15" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>{safeConcern}</text>
-             <text y="45" fill="#006938" opacity="0.5" style={{ fontSize: '8px', fontWeight: '900' }}>Q. 요즘 나의 고민</text>
-             <text y="60" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>{safeReason}</text>
-             <text y="90" fill="#006938" opacity="0.5" style={{ fontSize: '8px', fontWeight: '900' }}>Q. 한줄 처방</text>
-             <text y="105" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>{safeAiLine}</text>
-          </g>
+          {/* [섹션 4] 우측 상단: QA 영역 (x:618, y:30.5) */}
+          <rect x="618" y="30.5" width="183" height="156" rx="20" stroke="#006938" strokeWidth="1" strokeDasharray="2 2" opacity="0.4"/>
+          <foreignObject x="628" y="45" width="163" height="141">
+            <div style={{ color: '#006938', fontFamily: 'S-Core Dream' }}>
+              {[
+                { q: 'Q. 나를 알려주세요', a: safeConcern },
+                { q: 'Q. 요즘 나의 고민', a: safeReason },
+                { q: 'Q. 한줄 처방', a: safeAiLine }
+              ].map((item, idx) => (
+                <div key={idx} style={{ marginBottom: '14px' }}>
+                  <div style={{ fontSize: '8px', fontWeight: '900', opacity: 0.5, marginBottom: '2px' }}>{item.q}</div>
+                  <div style={{ fontSize: '10px', fontWeight: '900', borderLeft: '2px solid #006938', paddingLeft: '6px', lineHeight: '1.2' }}>{item.a}</div>
+                </div>
+              ))}
+            </div>
+          </foreignObject>
 
-          {/* [섹션 5] 상세 처방 내용 (중앙 영역) */}
-          <g transform="translate(330, 230)">
-            {/* 명상 처방 */}
-            <text x="0" y="20" fill="#006938" style={{ fontSize: '18px', fontWeight: '900' }}>명상 처방</text>
-            <text x="80" y="19" fill="#006938" style={{ fontSize: '16px', fontWeight: '800' }}>: {prescription?.meditation.title}</text>
-            <foreignObject x="0" y="32" width="480" height="90">
-              <div style={{ fontSize: '14px', lineHeight: '1.5', color: '#006938', fontWeight: '500', fontFamily: 'S-Core Dream', wordBreak: 'keep-all' }}>
+          {/* [섹션 5] 상세 처방 내용 */}
+          <foreignObject x="330" y="225" width="480" height="250">
+            <div style={{ color: '#006938', fontFamily: 'S-Core Dream' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '18px', fontWeight: '900' }}>명상 처방</span>
+                <span style={{ fontSize: '16px', fontWeight: '800' }}>: {prescription?.meditation.title}</span>
+              </div>
+              <div style={{ fontSize: '14px', lineHeight: '1.5', fontWeight: '500', marginBottom: '30px', wordBreak: 'keep-all' }}>
                 {prescription?.meditation.desc}
               </div>
-            </foreignObject>
 
-            {/* 오늘의 차 & 추천 향 (Row) */}
-            <g transform="translate(0, 130)">
-               <line x1="0" y1="0" x2="0" y2="60" stroke="#006938" strokeWidth="2"/>
-               <text x="10" y="15" fill="#006938" style={{ fontSize: '14px', fontWeight: '900' }}>오늘의 차</text>
-               <text x="80" y="15" fill="#006938" style={{ fontSize: '13px', fontWeight: '700' }}>{prescription?.tea.title}</text>
-               <foreignObject x="10" y="22" width="220" height="40">
-                 <div style={{ fontSize: '11px', lineHeight: '1.3', color: '#006938', opacity: 0.8, fontWeight: '500' }}>
-                   {prescription?.tea.desc}
-                 </div>
-               </foreignObject>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div style={{ borderLeft: '2px solid #006938', paddingLeft: '10px' }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '14px', fontWeight: '900' }}>오늘의 차</span>
+                    <span style={{ fontSize: '12px', fontWeight: '700' }}>{prescription?.tea.title}</span>
+                  </div>
+                  <div style={{ fontSize: '11px', lineHeight: '1.3', opacity: 0.8 }}>{prescription?.tea.desc}</div>
+                </div>
+                <div style={{ borderLeft: '2px solid #006938', paddingLeft: '10px' }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '14px', fontWeight: '900' }}>추천 향</span>
+                    <span style={{ fontSize: '12px', fontWeight: '700' }}>{prescription?.incense.title}</span>
+                  </div>
+                  <div style={{ fontSize: '11px', lineHeight: '1.3', opacity: 0.8 }}>{prescription?.incense.desc}</div>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
 
-               <g transform="translate(250, 0)">
-                  <line x1="0" y1="0" x2="0" y2="60" stroke="#006938" strokeWidth="2"/>
-                  <text x="10" y="15" fill="#006938" style={{ fontSize: '14px', fontWeight: '900' }}>추천 향</text>
-                  <text x="65" y="15" fill="#006938" style={{ fontSize: '13px', fontWeight: '700' }}>{prescription?.incense.title}</text>
-                  <foreignObject x="10" y="22" width="220" height="40">
-                    <div style={{ fontSize: '11px', lineHeight: '1.3', color: '#006938', opacity: 0.8, fontWeight: '500' }}>
-                      {prescription?.incense.desc}
-                    </div>
-                  </foreignObject>
-               </g>
-            </g>
-          </g>
-
-          {/* [섹션 6] 메타데이터 및 로고 (우측 하단) */}
+          {/* [섹션 6] 메타데이터 */}
           <g transform="translate(583, 481)">
             <line x1="0" y1="0" x2="234" y2="0" stroke="#006938" strokeWidth="2"/>
-            <line x1="0" y1="24" x2="234" y2="24" stroke="#006938"/>
-            <line x1="0" y1="48" x2="234" y2="48" stroke="#006938"/>
-            <line x1="0" y1="73" x2="234" y2="73" stroke="#006938"/>
-            <line x1="100" y1="0" x2="100" y2="73" stroke="#006938"/>
-            
-            <text x="10" y="16" fill="#006938" style={{ fontSize: '9px', fontWeight: '900' }}>ISSUE DATE</text>
-            <text x="110" y="16" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>{today}</text>
-            
-            <text x="10" y="40" fill="#006938" style={{ fontSize: '9px', fontWeight: '900' }}>VISITOR NO.</text>
-            <text x="110" y="40" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>#{String(visitorCount).padStart(4, '0')}</text>
-            
-            <text x="10" y="65" fill="#006938" style={{ fontSize: '9px', fontWeight: '900' }}>RX CODE</text>
-            <text x="110" y="65" fill="#006938" style={{ fontSize: '11px', fontWeight: '900' }}>{safeCode}</text>
+            {[0, 24, 48, 72].map(y => <line key={y} x1="0" y1={y} x2="234" y2={y} stroke="#006938" strokeWidth="1"/>)}
+            <line x1="90" y1="0" x2="90" y2="72" stroke="#006938" strokeWidth="1"/>
+            <foreignObject x="0" y="0" width="234" height="72">
+              <div style={{ color: '#006938', fontSize: '10px', height: '100%', fontFamily: 'S-Core Dream' }}>
+                {[
+                  { l: 'ISSUE DATE', v: today },
+                  { l: 'VISITOR NO.', v: `#${String(visitorCount).padStart(4, '0')}` },
+                  { l: 'RX CODE', v: safeCode }
+                ].map((item, i) => (
+                  <div key={i} style={{ height: '24px', display: 'flex', alignItems: 'center', borderBottom: i < 2 ? 'none' : 'none' }}>
+                    <div style={{ width: '90px', paddingLeft: '8px', fontWeight: '900', fontSize: '8px' }}>{item.l}</div>
+                    <div style={{ paddingLeft: '10px', fontWeight: '900', fontSize: '10px', letterSpacing: '-0.5px' }}>{item.v}</div>
+                  </div>
+                ))}
+              </div>
+            </foreignObject>
           </g>
 
-          {/* 푸터 텍스트 */}
+          {/* 푸터 */}
           <text x="41" y="580" fill="#006938" opacity="0.3" style={{ fontSize: '8px', fontWeight: '700' }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | MIND PRESCRIPTION SERVICE</text>
         </g>
         <defs>
