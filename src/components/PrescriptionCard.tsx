@@ -150,8 +150,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
     );
   }
 
-  // ─── [PRINT MODE: PREMIUM FIGMA V8.0 - ABSOLUTE FIDELITY] ───
-  // 피그마 디자인(842x595px)의 모든 좌표를 절대값으로 매핑하여 픽셀 완벽 구현
+  // ─── [PRINT MODE: PREMIUM FIGMA FINAL - PIXEL PERFECT] ───
   return (
     <div 
       ref={ref} 
@@ -166,7 +165,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         color: '#006938'
       }}
     >
-      {/* 1. 처방 유형 박스 (TOP LEFT - GREEN) - x:41, y:30 */}
+      {/* 1. 처방 유형 박스 (TOP LEFT) - x:41, y:30 */}
       <div style={{
         position: 'absolute', left: '41px', top: '30px', width: '275px', height: '157px',
         borderRadius: '20px', backgroundColor: '#006938', color: 'white',
@@ -177,7 +176,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         <div style={{ fontSize: '10px', textAlign: 'center', opacity: 0.9, lineHeight: '1.5', padding: '0 10px' }}>{safeAiLine}</div>
       </div>
 
-      {/* 2. 명상법 처방 (TOP RIGHT - WHITE) - x:330, y:30 */}
+      {/* 2. 명상법 처방 (TOP RIGHT) - x:330, y:30 */}
       <div style={{
         position: 'absolute', left: '330px', top: '30px', width: '274px', height: '156px',
         borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
@@ -188,7 +187,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.meditation.desc}</div>
       </div>
 
-      {/* 3. 인센스 처방 (MID LEFT - WHITE) - x:41, y:202 */}
+      {/* 3. 인센스 처방 (MID LEFT) - x:41, y:202 */}
       <div style={{
         position: 'absolute', left: '41px', top: '202px', width: '275px', height: '157px',
         borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
@@ -199,7 +198,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.incense.desc}</div>
       </div>
 
-      {/* 4. 허브차 처방 (MID RIGHT - WHITE) - x:330, y:202 */}
+      {/* 4. 허브차 처방 (MID RIGHT) - x:330, y:202 */}
       <div style={{
         position: 'absolute', left: '330px', top: '202px', width: '274px', height: '156px',
         borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
@@ -210,72 +209,72 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.tea.desc}</div>
       </div>
 
-      {/* ─── [NEW] 체험 확인 (STAMP SECTION) ─── */}
-      <div style={{ position: 'absolute', left: '625px', top: '35px', width: '180px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <span style={{ fontSize: '24px', fontWeight: '900' }}>체험 확인</span>
-          <span style={{ fontSize: '10px', fontWeight: '500', opacity: 0.8, lineHeight: '1.2' }}>선명상축제에서 나에게 맞는<br/>마음처방을 체험해보세요</span>
+      {/* 5. 체험 확인 (STAMP SECTION) - BOTTOM LEFT Side */}
+      <div style={{ position: 'absolute', left: '41px', top: '385px', width: '420px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '20px' }}>
+          <span style={{ fontSize: '32px', fontWeight: '900' }}>체험 확인</span>
+          <span style={{ fontSize: '11px', fontWeight: '500', opacity: 0.8, lineHeight: '1.5' }}>선명상축제에서 나에게 맞는<br/>마음처방을 체험해보세요</span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '10px' }}>
+        <div style={{ display: 'flex', gap: '24px' }}>
           {[
             { label: '명상 체험소', bg: '#E6EFEA' },
             { label: '허브차 명상', bg: '#E6EFEA' },
             { label: '인센스 처방', bg: '#E6EFEA' }
           ].map((item, idx) => (
-            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ 
-                width: '64px', height: '64px', borderRadius: '50%', 
-                border: '1.5px dashed #006938', backgroundColor: item.bg,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '10px', fontWeight: '900', textAlign: 'center', padding: '0 5px', boxSizing: 'border-box'
-              }}>
-                {item.label}
-              </div>
+            <div key={idx} style={{ 
+              width: '105px', height: '105px', borderRadius: '50%', 
+              border: '2px dashed #006938', backgroundColor: item.bg,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '13px', fontWeight: '900', textAlign: 'center', padding: '0 10px', boxSizing: 'border-box'
+            }}>
+              {item.label}
             </div>
           ))}
         </div>
       </div>
 
-      {/* [하단 영역] 로고 및 고유 정보 */}
-      
-      {/* 로고 영역 (BOTTOM LEFT) */}
-      <div style={{ position: 'absolute', left: '41px', bottom: '40px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ fontSize: '10px', fontWeight: '700', lineHeight: '1.4' }}>
-          당신의 마음을 읽고<br/>선명상의 지혜로<br/>처방드립니다.
-        </div>
-        <img src="/Group.svg" style={{ width: '100px', height: 'auto', marginTop: '10px' }} alt="MIND RX" />
-        <div style={{ fontSize: '7px', fontWeight: '700', opacity: 0.5 }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | SEON MEDITATION FESTIVAL</div>
-      </div>
-
-      {/* Q&A 및 코드 영역 (BOTTOM RIGHT) */}
-      <div style={{ position: 'absolute', right: '25px', bottom: '30px', width: '310px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        {/* Q&A Grid */}
-        <div style={{ borderTop: '2px solid #006938', paddingTop: '15px', display: 'flex', gap: '20px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '10px', fontWeight: '900', whiteSpace: 'nowrap' }}>
-            <div>Q. 나를 알려주세요</div>
-            <div>Q. 요즘 나의 고민</div>
-            <div>Q. 이유</div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '10px', fontWeight: '500', color: '#333' }}>
-            <div>{safeMbti}</div>
-            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{safeConcern}</div>
-            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{safeReason}</div>
-          </div>
+      {/* 6. Logo & Footer (BOTTOM RIGHT) */}
+      <div style={{ position: 'absolute', right: '41px', bottom: '35px', width: '330px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+        {/* Heart Logo */}
+        <img src="/Group.svg" style={{ width: '160px', height: 'auto' }} alt="MIND RX" />
+        
+        {/* Q&A Table */}
+        <div style={{ width: '100%', borderTop: '2px solid #006938' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '9px', marginTop: '10px' }}>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid #E6EFEA' }}>
+                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 나를 알려주세요</td>
+                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeMbti}</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid #E6EFEA' }}>
+                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 요즘 나의 고민</td>
+                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeConcern}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '8px 0', fontWeight: '900' }}>Q. 이 고민이 내게 중요한 이유</td>
+                <td style={{ padding: '8px 0', fontWeight: '500', textAlign: 'right' }}>{safeReason}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        {/* Prescription Code Box */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #006938', paddingTop: '10px', paddingBottom: '5px' }}>
-          <div style={{ fontSize: '10px', fontWeight: '900' }}>마음처방전 code</div>
-          <div style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.5px', color: '#006938' }}>{safeCode}</div>
-        </div>
-
-        <div style={{ fontSize: '8px', opacity: 0.5, textAlign: 'right', marginTop: '-5px' }}>
+        {/* Issue Date & Visitor */}
+        <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'flex-end', fontSize: '9px', fontWeight: '700', opacity: 0.4, marginTop: '5px' }}>
           ISSUE DATE: {today} | VISITOR: #{String(visitorCount).padStart(4, '0')}
         </div>
       </div>
 
-      {/* 배경 장식 선 (SVG에서 가져온 라인들) */}
-      <div style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none', width: '100%', height: '100%', opacity: 0.1 }}>
+      {/* Slogan (BOTTOM LEFT Corner) */}
+      <div style={{ position: 'absolute', left: '41px', bottom: '35px', opacity: 0.6 }}>
+        <div style={{ fontSize: '10px', fontWeight: '700', lineHeight: '1.4' }}>
+          당신의 마음을 읽고<br/>선명상의 지혜로<br/>처방드립니다.
+        </div>
+        <div style={{ fontSize: '8px', fontWeight: '900', marginTop: '15px' }}>MIND PRESCRIPTION</div>
+        <div style={{ fontSize: '7px', fontWeight: '700', opacity: 0.5 }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | SEON MEDITATION FESTIVAL</div>
+      </div>
+
+      {/* Decorative Lines */}
+      <div style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none', width: '100%', height: '100%', opacity: 0.05 }}>
         <div style={{ position: 'absolute', left: '41px', top: '202px', width: '564px', height: '1px', backgroundColor: '#006938' }} />
         <div style={{ position: 'absolute', left: '330px', top: '30px', width: '1px', height: '328px', backgroundColor: '#006938' }} />
       </div>
