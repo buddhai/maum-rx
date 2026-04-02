@@ -48,6 +48,7 @@ export default function KioskPage() {
   }
 
   const handlePrint = async () => {
+    // Mark as printed
     try {
       await fetch(`/api/rx/${encodeURIComponent(session!.code)}`, {
         method: 'PATCH',
@@ -71,167 +72,258 @@ export default function KioskPage() {
     : null
 
   return (
-    <div className="min-h-screen bg-[#006938] text-white font-scdream overflow-hidden flex flex-col">
+    <>
       <Head>
         <title>마음처방전 키오스크 | 현장 출력</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      {/* ─── Print-only CSS ─── */}
       <style>{`
+        @media screen {
+          .kiosk-print-zone { display: none; }
+        }
         @media print {
           @page {
             size: ${printSize === 'A4-landscape' ? 'A4 landscape' : 'A4 portrait'};
             margin: 0;
           }
           body {
-            background-color: white !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             margin: 0;
           }
           .kiosk-screen { display: none !important; }
-          .kiosk-print-zone { display: block !important; }
-        }
-        @media screen {
-          .kiosk-print-zone { display: none; }
+          .kiosk-print-zone {
+            display: block;
+            width: 100%;
+          }
         }
       `}</style>
 
       {/* ─── Screen UI ─── */}
-      <div className="kiosk-screen flex-1 flex flex-col relative">
-        {/* Background Graphic */}
-        <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <circle cx="10" cy="10" r="20" fill="white" />
-            <circle cx="90" cy="90" r="30" fill="white" />
-          </svg>
-        </div>
-
-        {/* Global Toolbar */}
-        <header className="p-8 pb-0 flex justify-between items-center z-10">
-          <div className="flex flex-col">
-            <h1 className="text-[28px] font-black tracking-tight leading-none mb-2">
-              마음처방전 <span className="opacity-50 text-[18px]">KIOSK V2</span>
-            </h1>
-            <p className="text-[14px] opacity-60">2026 서울국제불교박람회 | 선명상축제</p>
+      <div className="kiosk-screen min-h-screen bg-[#FDFDFB] flex flex-col font-pretendard">
+        {/* Top bar: Immersive Dark Green */}
+        <div style={{
+          background: '#006838',
+          color: 'white',
+          padding: '24px 40px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+        }}>
+          <div>
+            <div style={{ fontSize: '12px', fontWeight: '900', opacity: 0.6, letterSpacing: '2px', marginBottom: '4px' }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO</div>
+            <h1 style={{ fontSize: '24px', fontWeight: '900', margin: 0, letterSpacing: '-0.5px' }}>마음처방전 현장 출력 키오스크</h1>
           </div>
           {session && (
-            <button 
-              onClick={handleReset}
-              className="px-6 py-3 rounded-full border border-white border-opacity-30 bg-white bg-opacity-5 hover:bg-opacity-10 transition-all font-bold"
-            >
-              ← 처음으로 돌아가기
+            <button onClick={handleReset} style={{
+              padding: '12px 28px',
+              borderRadius: '30px',
+              border: '1.5px solid rgba(255,255,255,0.3)',
+              background: 'transparent',
+              color: 'white',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}>
+              ← 다른 코드 조회
             </button>
           )}
-        </header>
+        </div>
 
-        <main className="flex-1 flex items-center justify-center p-8 z-10">
+        {/* Main content */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '40px',
+        }}>
           {!session ? (
-            /* ── Lookup View ── */
-            <div className="w-full max-w-[600px] bg-white rounded-[40px] p-16 shadow-[0_20px_80px_rgba(0,0,0,0.2)] text-center animate-fade-in">
-              <div className="w-20 h-20 bg-[#F0F5F2] rounded-full flex items-center justify-center mx-auto mb-8">
-                <span className="text-4xl text-[#006938]">🔍</span>
-              </div>
-              <h2 className="text-[32px] font-black text-[#006938] mb-4">처방 코드 조회</h2>
-              <p className="text-[#666] text-[16px] mb-10 leading-relaxed break-keep">
-                모바일에서 발급받으신 4단어 처방 코드를<br/>아래 입력 칸에 정확히 입력해 주세요.
+            /* ── Code Input View: Premium & Minimal ── */
+            <div style={{
+              background: 'white',
+              padding: '80px 60px',
+              borderRadius: '40px',
+              boxShadow: '0 20px 80px rgba(0,0,0,0.08)',
+              width: '100%',
+              maxWidth: '640px',
+              textAlign: 'center',
+              border: '1px solid #F0F0F0'
+            }}>
+              <div style={{ width: '80px', height: '80px', background: '#F0F7F3', borderRadius: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px', fontSize: '32px' }}>🌿</div>
+              <h2 style={{ fontSize: '32px', fontWeight: '900', color: '#006838', marginBottom: '12px', letterSpacing: '-1px' }}>
+                처방전 코드 입력
+              </h2>
+              <p style={{ fontSize: '16px', color: '#888', marginBottom: '48px', fontWeight: '500' }}>
+                모바일에서 받은 4자리의 &apos;마음 한 장&apos; 코드를 입력해주세요.
               </p>
 
-              <form onSubmit={(e) => { e.preventDefault(); handleLookup(); }} className="flex flex-col gap-6">
-                <div className="relative group">
+              <form onSubmit={(e) => { e.preventDefault(); handleLookup(); }} style={{ textAlign: 'left' }}>
+                <div style={{ position: 'relative', marginBottom: '24px' }}>
                   <input
                     type="text"
                     value={code}
                     onChange={e => setCode(e.target.value)}
-                    placeholder="예: 연꽃의 해탈"
+                    placeholder="예: 지혜의 보살"
                     autoFocus
-                    className="w-full bg-[#F5F7F6] border-2 border-transparent focus:border-[#006938] transition-all p-6 text-[24px] font-black text-[#006938] rounded-[24px] text-center placeholder:opacity-20 placeholder:text-[#006938] outline-none"
+                    style={{
+                      width: '100%',
+                      padding: '24px',
+                      fontSize: '32px',
+                      borderRadius: '24px',
+                      border: '2.5px solid #E8E8E8',
+                      textAlign: 'center',
+                      outline: 'none',
+                      fontWeight: '900',
+                      color: '#006838',
+                      transition: 'all 0.3s ease',
+                      backgroundColor: '#FAFAF9'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#006838'}
+                    onBlur={(e) => e.target.style.borderColor = '#E8E8E8'}
                   />
                 </div>
-                
                 {error && (
-                  <div className="bg-red-50 text-red-600 p-4 rounded-[16px] font-bold text-[15px] animate-pulse">
-                    ⚠ {error}
-                  </div>
+                  <p style={{ color: '#E53E3E', fontSize: '15px', marginBottom: '24px', textAlign: 'center', fontWeight: '700' }}>
+                    {error}
+                  </p>
                 )}
-                
                 <button
                   type="submit"
                   disabled={!code.trim() || loading}
-                  className={`w-full p-6 rounded-[24px] text-[20px] font-black transition-all ${
-                    code.trim() 
-                      ? 'bg-[#006938] text-white shadow-lg shadow-[#00693844] hover:scale-[1.02] active:scale-[0.98]' 
-                      : 'bg-[#eee] text-[#ccc]'
-                  }`}
+                  style={{
+                    width: '100%',
+                    padding: '22px',
+                    fontSize: '20px',
+                    fontWeight: '900',
+                    background: code.trim() ? '#006838' : '#D1D5DB',
+                    color: 'white',
+                    borderRadius: '24px',
+                    cursor: code.trim() ? 'pointer' : 'default',
+                    transition: 'all 0.2s',
+                    border: 'none',
+                    boxShadow: code.trim() ? '0 8px 30px rgba(0,104,56,0.2)' : 'none'
+                  }}
                 >
-                  {loading ? '처방전 찾는 중...' : '처방전 불러오기'}
+                  {loading ? '데이터를 가져오는 중...' : '처방전 확인하기'}
                 </button>
               </form>
             </div>
           ) : (
-            /* ── Preview View ── */
-            <div className="w-full max-w-[1200px] flex flex-col gap-6 animate-fade-in">
-              <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-[32px] p-6 flex justify-between items-center border border-white border-opacity-10 shadow-xl">
-                <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="px-3 py-1 bg-white text-[#006938] rounded-full text-[12px] font-black">PRESCRIPTION FOUND</span>
-                    <h2 className="text-[24px] font-black">{session.code}</h2>
-                  </div>
-                  <p className="text-[14px] opacity-70">A4 가로 모드로 인쇄할 준비가 되었습니다.</p>
+            /* ── Print Preview View: Immersive Gallery Mode ── */
+            <div style={{ width: '100%', maxWidth: '1200px', display: 'flex', gap: '40px', alignItems: 'start' }}>
+              
+              {/* Sidebar Controls */}
+              <div style={{ width: '320px', background: 'white', padding: '32px', borderRadius: '32px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', border: '1px solid #F0F0F0', flexShrink: 0 }}>
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: '900', color: '#006838', opacity: 0.5, marginBottom: '8px' }}>TARGET CODE</div>
+                  <h2 style={{ fontSize: '28px', fontWeight: '900', color: '#006838', margin: 0, letterSpacing: '-1px' }}>
+                    {session.code}
+                  </h2>
                 </div>
-                
-                <div className="flex gap-4">
-                  <select
-                    value={printSize}
-                    onChange={e => setPrintSize(e.target.value as typeof printSize)}
-                    className="bg-white bg-opacity-10 border border-white border-opacity-20 text-white p-4 rounded-[20px] font-bold outline-none cursor-pointer hover:bg-opacity-20 transition-all"
-                  >
-                    <option value="A4-landscape" className="text-black">A4 가로 (표준)</option>
-                    <option value="A4-portrait" className="text-black">A4 세로</option>
-                  </select>
-                  
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ borderTop: '1px solid #F0F0F0', paddingTop: '24px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', color: '#666', marginBottom: '10px' }}>인쇄 용지 설정</label>
+                    <select
+                      value={printSize}
+                      onChange={e => setPrintSize(e.target.value as typeof printSize)}
+                      style={{
+                        width: '100%',
+                        padding: '14px 20px',
+                        borderRadius: '16px',
+                        border: '2px solid #F0F0F0',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        backgroundColor: '#FAFAFA',
+                        cursor: 'pointer',
+                        outline: 'none'
+                      }}
+                    >
+                      <option value="A4-landscape">A4 가로 (수평)</option>
+                      <option value="A4-portrait">A4 세로 (수직)</option>
+                    </select>
+                  </div>
+
                   <button
                     onClick={handlePrint}
-                    className="bg-white text-[#006938] px-10 py-4 rounded-[20px] text-[20px] font-black shadow-lg hover:bg-[#F0F5F2] hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+                    style={{
+                      marginTop: '16px',
+                      width: '100%',
+                      padding: '24px',
+                      borderRadius: '20px',
+                      background: '#006838',
+                      color: 'white',
+                      fontSize: '20px',
+                      fontWeight: '900',
+                      cursor: 'pointer',
+                      border: 'none',
+                      boxShadow: '0 10px 30px rgba(0,104,56,0.25)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '12px'
+                    }}
                   >
-                    <span>🖨</span> 프린트하기
+                    <span>🖨️</span> 지금 바로 출력하기
                   </button>
+                  
+                  <p style={{ fontSize: '13px', color: '#AAA', textAlign: 'center', lineHeight: '1.5' }}>
+                    * 출력하기 버튼을 누르면 용지함 1번에서<br/>처방전이 자동으로 인쇄됩니다.
+                  </p>
                 </div>
               </div>
 
-              {/* Preview Container */}
-              <div className="flex-1 bg-white bg-opacity-5 rounded-[40px] p-12 flex items-center justify-center border border-white border-opacity-5 relative overflow-hidden">
-                <div className="absolute top-4 left-4 text-[10px] font-bold opacity-30 tracking-widest uppercase">Paper Preview (Screen Only)</div>
-                <div style={{ 
-                  transform: `scale(${printSize === 'A4-landscape' ? 0.7 : 0.5})`,
-                  transformOrigin: 'center center',
-                  boxShadow: '0 40px 100px rgba(0,0,0,0.3)'
-                }} className="bg-white shadow-2xl">
-                  {prescription && (
-                    <PrescriptionCard
-                      code={session.code}
-                      mbtiStr={session.mbtiStr}
-                      prescription={prescription}
-                      concern={session.concern}
-                      reason={session.reason}
-                      aiLine={session.aiLine}
-                      mode="print"
-                    />
-                  )}
+              {/* High-Fidelity Preview Area */}
+              <div style={{ flex: 1, textAlign: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '16px', opacity: 0.4 }}>
+                  <span style={{ fontSize: '14px', fontWeight: '900' }}>REAL-TIME PRINT PREVIEW</span>
+                  <div style={{ width: '40px', height: '1px', background: '#000' }}></div>
+                </div>
+                
+                <div style={{
+                  width: '100%',
+                  background: '#EAEAE2',
+                  padding: '40px',
+                  borderRadius: '32px',
+                  boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.05)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{ 
+                    boxShadow: '0 30px 100px rgba(0,0,0,0.2)',
+                    // 피그마 디자인(842px)을 화면 크기에 맞게 스케일링
+                    transform: `scale(${printSize === 'A4-landscape' ? 0.95 : 0.7})`,
+                    transformOrigin: 'center center',
+                    backgroundColor: 'white'
+                  }}>
+                    {prescription && (
+                      <PrescriptionCard
+                        code={session.code}
+                        mbtiStr={session.mbtiStr}
+                        prescription={prescription}
+                        concern={session.concern}
+                        reason={session.reason}
+                        aiLine={session.aiLine}
+                        mode="print"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           )}
-        </main>
-        
-        <footer className="p-8 opacity-40 text-[12px] flex justify-between">
-          <p>© 2026 SEOUL INTERNATIONAL BUDDHISM EXPO</p>
-          <p>MAUM-RX OFFICE</p>
-        </footer>
+        </div>
       </div>
 
-      {/* ─── Print Zone ─── */}
-      <div className="kiosk-print-zone bg-white">
+      {/* ─── Print-only zone: Fixed 842x595 output ─── */}
+      <div className="kiosk-print-zone">
         {prescription && session && (
           <PrescriptionCard
             code={session.code}
@@ -244,6 +336,6 @@ export default function KioskPage() {
           />
         )}
       </div>
-    </div>
+    </>
   )
 }
