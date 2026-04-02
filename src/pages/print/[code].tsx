@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { PrescriptionCard } from '@/components/PrescriptionCard'
+import PrescriptionCard from '@/components/PrescriptionCard'
 import { getRxByCode } from '@/lib/db'
 import { PRESCRIPTIONS } from '@/lib/prescriptions'
 import type { Concern, Reason } from '@/lib/prescriptions'
@@ -165,12 +165,8 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
           {prescription && (
             <PrescriptionCard
               code={session.code}
-              mbtiStr={session.mbtiStr}
-              concern={session.concern}
-              reason={session.reason}
-              aiLine={session.aiLine}
+              mbtiStr={session.mbti}
               prescription={prescription}
-              isPrintMode={true}
             />
           )}
         </div>
@@ -208,12 +204,8 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
         {prescription && (
           <PrescriptionCard
             code={session.code}
-            mbtiStr={session.mbtiStr}
-            concern={session.concern}
-            reason={session.reason}
-            aiLine={session.aiLine}
+            mbtiStr={session.mbti}
             prescription={prescription}
-            isPrintMode={true}
           />
         )}
       </div>
