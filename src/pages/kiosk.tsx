@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import PrescriptionCard from '@/components/PrescriptionCard'
 import { PRESCRIPTIONS } from '@/lib/prescriptions'

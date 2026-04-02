@@ -1,6 +1,6 @@
 {
   "name": "maum-rx",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Maum-RX Kiosk Printing System (High-Fidelity SVG)",
   "private": true,
   "scripts": {
