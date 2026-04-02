@@ -2,31 +2,31 @@ import React, { forwardRef } from 'react'
 import type { Prescription, Concern, Reason } from '@/lib/prescriptions'
 
 interface PrescriptionCardProps {
-  code: string
-  mbtiStr: string
-  concern: Concern
-  reason: Reason
+  code?: string
+  mbtiStr?: string
+  concern?: Concern
+  reason?: Reason
   aiLine?: string
-  prescription: Prescription
+  prescription?: Prescription
   isPrintMode?: boolean
 }
 
 export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(
   ({ code, mbtiStr, concern, reason, prescription }, ref) => {
     
-    const concernLabel = concern === '막연한불안' ? '막연한 불안' : concern === '번아웃' ? '번아웃·피로' : concern
-    const reasonLabel = reason === '편안해지고싶어서' ? '그냥 편안해지고 싶어서' : 
-                        reason === '소중한사람때문에' ? '소중한 사람이 있어서' : 
-                        reason === '나답게살고싶어서' ? '나답게 살고 싶어서' : '더 성장하고 싶어서'
-
     // Safety check: If prescription is missing, handle it gracefully
     if (!prescription) {
       return (
-        <div ref={ref} className="w-[842px] h-[595px] bg-white flex items-center justify-center text-[#006938] font-bold">
-          처방 정보를 불러오는 중입니다...
+        <div ref={ref} className="w-[842px] h-[595px] bg-white flex items-center justify-center text-[#006938] font-bold border border-gray-100">
+          처방 정보를 확인 중입니다...
         </div>
       )
     }
+
+    const concernLabel = concern === '막연한불안' ? '막연한 불안' : concern === '번아웃' ? '번아웃·피로' : (concern || '')
+    const reasonLabel = reason === '편안해지고싶어서' ? '그냥 편안해지고 싶어서' : 
+                        reason === '소중한사람때문에' ? '소중한 사람이 있어서' : 
+                        reason === '나답게살고싶어서' ? '나답게 살고 싶어서' : (reason ? '더 성장하고 싶어서' : '')
 
     // ALWAYS return the high-fidelity SVG layout for this project
     return (
@@ -97,7 +97,7 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
           <text x="590" y="521" fill="#666" style={{ fontSize: '9px', fontWeight: '600' }}>사용자 고민: {concernLabel || ''}</text>
           <text x="590" y="545" fill="#666" style={{ fontSize: '9px', fontWeight: '600' }}>이유: {reasonLabel || ''}</text>
           
-          <text x="41" y="215" fill="#006938" opacity="0.6" style={{ fontSize: '14px', fontWeight: '900' }}>PATIENT MBTI: {mbtiStr?.toUpperCase() || ''}</text>
+          <text x="41" y="215" fill="#006938" opacity="0.6" style={{ fontSize: '14px', fontWeight: '900' }}>PATIENT MBTI: {String(mbtiStr || '').toUpperCase()}</text>
           
           <g transform="translate(41, 460)">
             <circle cx="55" cy="55" r="50" stroke="#006938" strokeWidth="1" strokeDasharray="4 2" opacity="0.2"/>
