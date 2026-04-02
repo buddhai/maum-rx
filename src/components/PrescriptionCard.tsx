@@ -20,253 +20,156 @@ export const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps
                         reason === '소중한사람때문에' ? '소중한 사람이 있어서' : 
                         reason === '나답게살고싶어서' ? '나답게 살고 싶어서' : '더 성장하고 싶어서'
 
-    const safeMbti = (mbtiStr || 'INTJ').toUpperCase()
-    const eI = (safeMbti[0] === 'E' ? 'E' : 'I') as 'E' | 'I'
-    const jP = (safeMbti[3] === 'P' ? 'P' : 'J') as 'J' | 'P'
-
     if (isPrintMode) {
-      // --- ROBUST A4 LANDSCAPE PRINT LAYOUT (Optimized for Fuji Apeos C325) ---
-      // Dimensions: 297mm x 210mm
       return (
         <div 
           ref={ref}
-          className="w-[297mm] h-[210mm] bg-white font-pretendard flex flex-col overflow-hidden box-border relative"
-          style={{ padding: '10mm' }}
+          id="prescription-print"
+          className="w-[297mm] h-[210mm] bg-white flex flex-col items-center justify-center overflow-hidden relative"
+          style={{ fontFamily: "'SCDream', sans-serif" }}
         >
-          {/* Main Visual Frame (Rounded like Mobile) */}
-          <div className="w-full h-full flex flex-col border-[1px] border-gray-100 rounded-[30px] overflow-hidden shadow-sm bg-white relative">
+          <svg 
+            width="842" 
+            height="595" 
+            viewBox="0 0 842 595" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full"
+          >
+            {/* Background */}
+            <rect width="842" height="595" fill="white"/>
             
-            {/* Header: Exact Mobile Replica vibe but stretched */}
-            <div className="w-full bg-[var(--primary-green)] pt-[25px] pb-[20px] text-center text-white relative shrink-0">
-              <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
-              <div className="text-[14px] font-bold opacity-80 tracking-[0.3em] mb-1 relative z-10">MIND PRESCRIPTION</div>
-              <h1 className="text-[42px] font-black font-scdream tracking-tight leading-none relative z-10">마음처방전</h1>
-              <div className="mt-4 inline-flex items-center justify-center px-6 py-2 bg-white bg-opacity-20 rounded-full border border-white border-opacity-40 backdrop-blur-sm relative z-10">
-                <span className="text-[20px] font-bold tracking-widest leading-none">{code}</span>
-              </div>
-            </div>
-
-            <div className="flex flex-1 p-[35px] gap-[35px] min-h-0 bg-white">
-              {/* LEFT SIDE (40%): Analysis & AI Line */}
-              <div className="w-[40%] flex flex-col gap-[25px]">
-                
-                {/* 1. Analysis Box */}
-                <div className="flex flex-col bg-white border-[1.5px] border-[#E8F0EA] rounded-[24px] overflow-hidden shadow-sm">
-                  <div className="bg-[var(--primary-green)] text-white text-center py-2.5 font-bold text-[17px] tracking-wide font-scdream">
-                    마음 상태 분석
-                  </div>
-                  <div className="p-6 flex flex-col gap-4 text-[17px]">
-                    <div className="flex justify-between items-center pb-2 border-b border-gray-50">
-                      <span className="font-bold text-[var(--primary-green)]">나의 MBTI</span>
-                      <span className="font-bold text-gray-800 bg-[#F0F5F2] px-4 py-1 rounded-full">{mbtiStr}</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-gray-50">
-                      <span className="font-bold text-[var(--primary-green)]">요즘 마음</span>
-                      <span className="font-bold text-gray-800">{concernLabel}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold text-[var(--primary-green)]">중요한 이유</span>
-                      <span className="font-bold text-gray-800">{reasonLabel}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 2. Hero Quote Box (The Star) */}
-                <div className="flex-1 flex flex-col border-[2px] border-[var(--primary-green)] rounded-[24px] bg-[#F0F5F2] overflow-hidden relative">
-                   <div className="absolute top-4 right-6 text-[40px] opacity-10">✨</div>
-                   <div className="bg-[var(--primary-green)] text-white text-center py-2.5 font-bold text-[17px] tracking-wide font-scdream">
-                    나만을 위한 한 줄 처방
-                  </div>
-                  <div className="flex-1 p-8 text-center flex flex-col items-center justify-center">
-                    <h2 className="text-[26px] font-black font-scdream text-[var(--primary-green)] mb-5 leading-snug break-keep">
-                      {prescription.typeName}
-                    </h2>
-                    <p className="text-[20px] leading-[1.6] font-bold text-gray-800 break-keep">
-                      &quot;{aiLine}&quot;
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT SIDE (60%): Detailed Remedies */}
-              <div className="w-[60%] flex flex-col gap-[25px] relative">
-                
-                {/* 3. Detailed Prescription Box */}
-                <div className="flex-1 flex flex-col border-[1.5px] border-[#E8F0EA] rounded-[24px] bg-white overflow-hidden shadow-sm min-h-0">
-                  <div className="bg-[var(--primary-green)] text-white text-center py-2.5 font-bold text-[17px] tracking-wide font-scdream shrink-0">
-                    상세 처방
-                  </div>
-                  
-                  <div className="p-8 flex flex-col gap-8 flex-1 min-h-0">
-                    {/* Meditation Segment */}
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <span className="text-[28px]">🧘‍♀️</span>
-                        <h3 className="font-bold text-[20px] text-[var(--primary-green)]">명상 처방</h3>
-                      </div>
-                      <div className="bg-[#FAFBF9] border border-gray-100 rounded-[16px] p-6">
-                        <h4 className="font-bold text-[19px] mb-2">{prescription.meditation.title}</h4>
-                        <p className="text-[17px] text-gray-600 leading-relaxed mb-4">{prescription.meditation.desc}</p>
-                        <div className="bg-white border-l-4 border-[var(--primary-green)] text-[var(--primary-green)] text-[16px] font-bold p-4 rounded-r-[8px] shadow-sm">
-                          💡 {MBTI_MODIFIERS.meditation[eI]} | {MBTI_MODIFIERS.practice[jP]}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tea & Incense Segment */}
-                    <div className="flex gap-6 flex-1 min-h-0">
-                      <div className="flex-1 flex flex-col">
-                        <div className="flex items-center gap-2 mb-2 shrink-0">
-                          <span className="text-[24px]">🍵</span>
-                          <h4 className="font-bold text-[18px] text-[var(--primary-green)]">허브차</h4>
-                        </div>
-                        <div className="bg-[#FAFBF9] border border-gray-100 rounded-[16px] p-5 flex-1 overflow-y-auto">
-                          <h5 className="font-bold text-[18px] mb-2 text-gray-800">{prescription.tea.title}</h5>
-                          <p className="text-[16px] text-gray-600 leading-relaxed">{prescription.tea.desc}</p>
-                        </div>
-                      </div>
-                      <div className="flex-1 flex flex-col">
-                        <div className="flex items-center gap-2 mb-2 shrink-0">
-                          <span className="text-[24px]">🌿</span>
-                          <h4 className="font-bold text-[18px] text-[var(--primary-green)]">인센스</h4>
-                        </div>
-                        <div className="bg-[#FAFBF9] border border-gray-100 rounded-[16px] p-5 flex-1 overflow-y-auto">
-                          <h5 className="font-bold text-[18px] mb-2 text-gray-800">{prescription.incense.title}</h5>
-                          <p className="text-[16px] text-gray-600 leading-relaxed">{prescription.incense.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* --- STAMP AREA (Bottom Right) --- */}
-                <div className="absolute bottom-4 right-4 flex flex-col items-center gap-1 opacity-60">
-                  <div className="w-[65px] h-[65px] border-[1.5px] border-dashed border-[var(--primary-green)] rounded-full flex items-center justify-center">
-                    <span className="text-[12px] font-bold text-[var(--primary-green)] text-center leading-tight">
-                      처방 확인<br/>STAMP
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* TOP LEFT BOX: PATIENT TYPE */}
+            <rect x="41" y="30" width="275" height="157" rx="20" fill="#006938"/>
+            <rect x="107" y="46" width="140" height="24" rx="12" fill="white"/>
+            <text x="177" y="62" fill="#006938" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 'bold' }}>마음 처방 유형</text>
             
-            {/* Footer Footer */}
-            <div className="w-full bg-gray-50 py-3 text-center border-t border-gray-100 text-[12px] text-gray-400 font-medium">
-              2026 서울국제불교박람회 선명상축제 — 마음처방전 Kiosk Production System
-            </div>
-          </div>
+            <foreignObject x="61" y="85" width="235" height="85">
+              <div style={{ color: 'white', fontSize: '20px', fontWeight: '800', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', lineHeight: '1.4', wordBreak: 'keep-all', fontFamily: 'SCDream, sans-serif' }}>
+                {prescription.typeName}
+              </div>
+            </foreignObject>
+
+            {/* TOP RIGHT BOX: MEDITATION */}
+            <rect x="330.5" y="30.5" width="274" height="156" rx="19.5" stroke="#006938" strokeWidth="1"/>
+            <rect x="420" y="51" width="96" height="24" rx="12" fill="#006938"/>
+            <text x="468" y="67" fill="white" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 'bold' }}>🧘 명상 처방</text>
+            
+            <text x="467.5" y="100" fill="#006938" textAnchor="middle" style={{ fontSize: '16px', fontWeight: '800', fontFamily: 'SCDream, sans-serif' }}>{prescription.meditation.title}</text>
+            <foreignObject x="350" y="112" width="235" height="65">
+              <div style={{ color: '#006938', fontSize: '11px', textAlign: 'center', lineHeight: '1.5', fontWeight: '500', padding: '0 10px', wordBreak: 'keep-all', fontFamily: 'SCDream, sans-serif' }}>
+                {prescription.meditation.desc}
+              </div>
+            </foreignObject>
+
+            {/* MIDDLE RIGHT BOX: TEA & INCENSE */}
+            <rect x="330.5" y="202.5" width="274" height="156" rx="19.5" stroke="#006938" strokeWidth="1"/>
+            <rect x="420" y="223" width="96" height="24" rx="12" fill="#006938"/>
+            <text x="468" y="239" fill="white" textAnchor="middle" style={{ fontSize: '11px', fontWeight: 'bold' }}>🕯️ 생활 처방</text>
+            
+            <g transform="translate(350, 265)">
+              <text x="0" y="0" fill="#006938" style={{ fontSize: '13px', fontWeight: '800', fontFamily: 'SCDream, sans-serif' }}>🍵 {prescription.tea.title}</text>
+              <foreignObject x="0" y="5" width="235" height="35">
+                <div style={{ color: '#444', fontSize: '10.5px', lineHeight: '1.4', fontWeight: '500', wordBreak: 'keep-all', fontFamily: 'SCDream, sans-serif' }}>{prescription.tea.desc}</div>
+              </foreignObject>
+
+              <text x="0" y="55" fill="#006938" style={{ fontSize: '13px', fontWeight: '800', fontFamily: 'SCDream, sans-serif' }}>🌿 {prescription.incense.title}</text>
+              <foreignObject x="0" y="60" width="235" height="35">
+                <div style={{ color: '#444', fontSize: '10.5px', lineHeight: '1.4', fontWeight: '500', wordBreak: 'keep-all', fontFamily: 'SCDream, sans-serif' }}>{prescription.incense.desc}</div>
+              </foreignObject>
+            </g>
+
+            {/* BOTTOM INFO AREA */}
+            <line x1="583" y1="481" x2="817" y2="481" stroke="#006938" strokeWidth="2"/>
+            <line x1="583" y1="505.7" x2="817" y2="505.7" stroke="#006938" strokeOpacity="0.3"/>
+            <line x1="583" y1="530" x2="817" y2="530" stroke="#006938" strokeOpacity="0.3"/>
+            <line x1="583" y1="554.2" x2="817" y2="554.2" stroke="#006938" strokeOpacity="0.3"/>
+            
+            <text x="590" y="498" fill="#006938" style={{ fontSize: '10px', fontWeight: '800' }}>PRESCRIPTION CODE: {code}</text>
+            <text x="590" y="522" fill="#666" style={{ fontSize: '9px', fontWeight: '500' }}>사용자 고민: {concernLabel}</text>
+            <text x="590" y="546" fill="#666" style={{ fontSize: '9px', fontWeight: '500' }}>이유: {reasonLabel}</text>
+            
+            <text x="41" y="215" fill="#006938" opacity="0.6" style={{ fontSize: '14px', fontWeight: '800' }}>PATIENT MBTI: {mbtiStr.toUpperCase()}</text>
+            
+            {/* Branding / Stamp Seals (Restored to design coords x=41, 164) */}
+            <g transform="translate(41, 460)">
+              <circle cx="55" cy="55" r="50" stroke="#006938" strokeWidth="1" strokeDasharray="4 2" opacity="0.2"/>
+              <text x="55" y="58" fill="#006938" textAnchor="middle" opacity="0.4" style={{ fontSize: '9px', fontWeight: '800' }}>MAUM-RX<br/>CERTIFIED</text>
+            </g>
+            <g transform="translate(164, 460)">
+              <circle cx="55" cy="55" r="50" stroke="#006938" strokeWidth="1" strokeDasharray="4 2" opacity="0.2"/>
+              <text x="55" y="58" fill="#006938" textAnchor="middle" opacity="0.4" style={{ fontSize: '9px', fontWeight: '800' }}>BEXPO 2026<br/>APPROVED</text>
+            </g>
+            
+            <text x="421" y="580" fill="#999" textAnchor="middle" style={{ fontSize: '9px' }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO - MIND PRESCRIPTION PROJECT</text>
+          </svg>
+
+          <style jsx global>{`
+            @media print {
+              @page { size: A4 landscape; margin: 0; }
+              body { margin: 0; -webkit-print-color-adjust: exact; }
+              #prescription-print { width: 297mm; height: 210mm; display: block !important; }
+            }
+          `}</style>
         </div>
       )
     }
 
-    // --- MOBILE SCREEN LAYOUT (Default) ---
-    // Visually matches the specific UI aesthetic of `처방전 출력 1안.svg`
     return (
       <div 
         ref={ref}
-        className="w-full bg-white font-pretendard flex flex-col items-center pb-[20px] overflow-hidden"
+        className="w-full max-w-sm mx-auto bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl font-sans"
       >
-        {/* Mobile Header Graphic Box */}
-        <div className="w-full bg-[var(--primary-green)] pt-[40px] pb-[30px] rounded-b-[24px] text-center text-white mb-[24px] shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
-          <div className="text-[12px] font-bold opacity-80 tracking-widest mb-2 relative z-10">MIND PRESCRIPTION</div>
-          <h1 className="text-[32px] font-black font-scdream tracking-tight leading-none relative z-10">마음처방전</h1>
-          <div className="mt-4 inline-flex items-center justify-center px-4 py-1.5 bg-white bg-opacity-20 rounded-full border border-white border-opacity-40 backdrop-blur-sm relative z-10">
-            <span className="text-[14px] font-bold tracking-widest">{code}</span>
+        <div className="bg-[#006938] p-8 text-white text-center relative">
+          <div className="absolute top-4 right-4 bg-white/20 px-2 py-1 rounded text-[10px] uppercase font-mono tracking-tighter">
+            {code}
+          </div>
+          <div className="inline-block bg-white text-[#006938] px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
+            Mind prescription
+          </div>
+          <h2 className="text-2xl font-bold mb-2 break-keep tracking-tight">
+            {prescription.typeName}
+          </h2>
+          <div className="flex items-center justify-center gap-2 text-white/80 text-sm italic">
+            <span>{mbtiStr.toUpperCase()}</span>
+            <span>•</span>
+            <span>{concernLabel}</span>
           </div>
         </div>
 
-        <div className="px-[20px] w-full flex flex-col gap-[24px]">
-          
-          {/* Section 1: 마음 상태 분석 */}
-          <div className="flex flex-col bg-white overflow-hidden">
-            <div className="bg-[var(--primary-green)] text-white text-center py-2 rounded-[12px] font-bold text-[14px] tracking-wide font-scdream mb-3">
-              마음 상태 분석
+        <div className="p-6 space-y-6">
+          <div className="p-5 rounded-2xl border border-[#006938]/10 bg-[#006938]/5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">🧘‍♀️</span>
+              <h3 className="font-bold text-[#006938]">명상 처방: {prescription.meditation.title}</h3>
             </div>
-            <div className="flex flex-col gap-3 text-[15px]">
-              <div className="flex justify-between items-center pb-2">
-                <span className="font-bold text-[var(--primary-green)] opacity-90">나의 MBTI</span>
-                <span className="font-bold text-gray-800 bg-[#F0F5F2] px-3 py-1 rounded-full">{mbtiStr}</span>
+            <p className="text-sm text-gray-600 leading-relaxed break-keep">
+              {prescription.meditation.desc}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            <div className="p-4 rounded-xl border border-gray-100 bg-gray-50 flex items-start gap-3">
+              <span className="text-xl">🍵</span>
+              <div>
+                <div className="font-bold text-gray-800 text-sm">{prescription.tea.title}</div>
+                <div className="text-xs text-gray-500 leading-tight mt-1">{prescription.tea.desc}</div>
               </div>
-              <div className="flex justify-between items-center pb-2">
-                <span className="font-bold text-[var(--primary-green)] opacity-90">요즘 가장 큰 고민</span>
-                <span className="font-bold text-gray-800">{concernLabel}</span>
-              </div>
-              <div className="flex justify-between items-center pt-1">
-                <span className="font-bold text-[var(--primary-green)] opacity-90">중요한 이유</span>
-                <span className="font-bold text-gray-800">{reasonLabel}</span>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-100 bg-gray-50 flex items-start gap-3">
+              <span className="text-xl">🌿</span>
+              <div>
+                <div className="font-bold text-gray-800 text-sm">{prescription.incense.title}</div>
+                <div className="text-xs text-gray-500 leading-tight mt-1">{prescription.incense.desc}</div>
               </div>
             </div>
           </div>
 
-          {/* Section 2: 나만을 위한 한 줄 처방 */}
-          <div className="flex flex-col border-[1.5px] border-[var(--primary-green)] rounded-[16px] bg-[#F0F5F2] overflow-hidden shadow-[0_4px_12px_rgba(0,104,55,0.06)]">
-             <div className="bg-[var(--primary-green)] text-white text-center py-2 font-bold text-[14px] tracking-wide font-scdream">
-              나만을 위한 한 줄 처방
-            </div>
-            <div className="p-6 text-center flex flex-col items-center">
-              <div className="w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center shadow-sm text-[20px] mb-3">
-                ✨
-              </div>
-              <h2 className="text-[22px] font-black font-scdream text-[var(--primary-green)] mb-3 leading-snug break-keep">
-                {prescription.typeName}
-              </h2>
-              <p className="text-[15px] leading-relaxed font-medium text-gray-800 break-keep">
-                &quot;{aiLine}&quot;
-              </p>
-            </div>
+          <div className="pt-4 border-t border-gray-50 text-center">
+            <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em]">
+              2026 Seoul International Buddhism Expo
+            </p>
           </div>
-
-          {/* Section 3: 상세 처방전 */}
-          <div className="flex flex-col border-[1.5px] border-[var(--primary-green)] rounded-[16px] bg-white overflow-hidden shadow-[0_4px_12px_rgba(0,104,55,0.06)]">
-             <div className="bg-[var(--primary-green)] text-white text-center py-2 font-bold text-[14px] tracking-wide font-scdream">
-              상세 처방
-            </div>
-            
-            <div className="p-5 flex flex-col gap-[20px]">
-              {/* Meditation Area */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[18px]">🧘‍♀️</span>
-                  <h3 className="font-bold text-[16px] text-[var(--primary-green)]">명상 처방</h3>
-                </div>
-                <div className="bg-[#FAFBF9] border border-gray-100 rounded-[12px] p-4">
-                  <h4 className="font-bold text-[15px] mb-2">{prescription.meditation.title}</h4>
-                  <p className="text-[14px] text-gray-600 leading-relaxed mb-3">{prescription.meditation.desc}</p>
-                  
-                  <div className="bg-[#E8F0EA] text-[var(--primary-green)] text-[13px] font-bold p-3 rounded-[8px] leading-snug">
-                    💡 {MBTI_MODIFIERS.meditation[eI]}<br/>
-                    {MBTI_MODIFIERS.practice[jP]}
-                  </div>
-                </div>
-              </div>
-
-              {/* Tea Area */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[18px]">🍵</span>
-                  <h3 className="font-bold text-[16px] text-[var(--primary-green)]">허브차 처방</h3>
-                </div>
-                <div className="bg-[#FAFBF9] border border-gray-100 rounded-[12px] p-4">
-                  <h4 className="font-bold text-[15px] mb-1.5">{prescription.tea.title}</h4>
-                  <p className="text-[14px] text-gray-600 leading-relaxed">{prescription.tea.desc}</p>
-                </div>
-              </div>
-
-              {/* Incense Area */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[18px]">🌿</span>
-                  <h3 className="font-bold text-[16px] text-[var(--primary-green)]">인센스 처방</h3>
-                </div>
-                <div className="bg-[#FAFBF9] border border-gray-100 rounded-[12px] p-4">
-                  <h4 className="font-bold text-[15px] mb-1.5">{prescription.incense.title}</h4>
-                  <p className="text-[14px] text-gray-600 leading-relaxed">{prescription.incense.desc}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     )
