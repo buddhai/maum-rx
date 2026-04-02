@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import html2canvas from 'html2canvas'
 import MobileLayout from '@/components/MobileLayout'
-import { PrescriptionCard } from '@/components/PrescriptionCard'
+import PrescriptionCard from '@/components/PrescriptionCard'
 import { PRESCRIPTIONS } from '@/lib/prescriptions'
 import type { Concern, Reason } from '@/lib/prescriptions'
 
@@ -101,14 +101,9 @@ export default function ResultPage() {
       <div className="w-full flex-1 overflow-y-auto animate-fade-in bg-white">
         {prescription && (
           <PrescriptionCard
-            ref={printRef}
             code={session.code}
             mbtiStr={session.mbtiStr}
-            concern={session.concern as Concern}
-            reason={session.reason as Reason}
-            aiLine={session.aiLine}
             prescription={prescription}
-            isPrintMode={false}
           />
         )}
 

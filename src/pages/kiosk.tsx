@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import Head from 'next/head'
-import { PrescriptionCard } from '@/components/PrescriptionCard'
+import PrescriptionCard from '@/components/PrescriptionCard'
 import { PRESCRIPTIONS } from '@/lib/prescriptions'
 import type { Concern, Reason } from '@/lib/prescriptions'
 
@@ -287,14 +287,9 @@ export default function KioskPage() {
                 }}>
                   {prescription && (
                     <PrescriptionCard
-                      ref={printRef}
                       code={session.code}
                       mbtiStr={session.mbtiStr}
-                      concern={session.concern as Concern}
-                      reason={session.reason as Reason}
-                      aiLine={session.aiLine}
                       prescription={prescription}
-                      isPrintMode={true}
                     />
                   )}
                 </div>
@@ -310,11 +305,7 @@ export default function KioskPage() {
           <PrescriptionCard
             code={session.code}
             mbtiStr={session.mbtiStr}
-            concern={session.concern as Concern}
-            reason={session.reason as Reason}
-            aiLine={session.aiLine}
             prescription={prescription}
-            isPrintMode={true}
           />
         )}
       </div>
