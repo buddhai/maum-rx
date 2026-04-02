@@ -289,6 +289,7 @@ export default function KioskPage() {
                       code={session.code}
                       mbtiStr={session.mbtiStr}
                       prescription={prescription}
+                      mode="print"
                     />
                   )}
                 </div>
@@ -305,6 +306,7 @@ export default function KioskPage() {
             code={session.code}
             mbtiStr={session.mbtiStr}
             prescription={prescription}
+            mode="print"
           />
         )}
       </div>

@@ -167,6 +167,7 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
               code={session.code}
               mbtiStr={session.mbti}
               prescription={prescription}
+              mode="print"
             />
           )}
         </div>
@@ -206,6 +207,7 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
             code={session.code}
             mbtiStr={session.mbti}
             prescription={prescription}
+            mode="print"
           />
         )}
       </div>
