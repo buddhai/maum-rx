@@ -6,6 +6,9 @@ interface PrescriptionCardProps {
   mbtiStr?: string;
   code?: string;
   visitorCount?: number;
+  concern?: string;
+  reason?: string;
+  aiLine?: string;
   mode?: 'mobile' | 'print';
 }
 
@@ -14,12 +17,20 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
   mbtiStr = '',
   code = '',
   visitorCount = 1,
+  concern = '',
+  reason = '',
+  aiLine = '',
   mode = 'mobile'
 }, ref) => {
   // 안전한 데이터 처리
   const safeMbti = String(mbtiStr || 'INTJ').toUpperCase();
   const safeTypeName = String(prescription?.typeName || '').toUpperCase();
   const safeCode = String(code || 'MAUM-RX').toUpperCase();
+  
+  // 걱정과 고민 데이터 처리
+  const safeConcern = concern || '나를 알려주세요'; // 기본값
+  const safeReason = reason || '요즘 나의 고민'; 
+  const safeAiLine = aiLine || '평온을 위한 첫걸음';
   
   const today = new Date().toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -140,82 +151,134 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
   }
 
   // ─── [PRINT MODE] ───
-  // 키오스크/인쇄용 픽셀 퍼펙트 SVG 레이아웃 (이모지 제거된 정갈한 스타일)
+  // 피그마(842x595) 데이터를 기반으로 한 좌표 정밀 배치 레이아웃 (V2.1 - Q&A 및 스탬프 추가)
   return (
-    <div ref={ref} className="flex items-center justify-center bg-white p-0 m-0 overflow-hidden" style={{ width: '297mm', height: '210mm' }}>
-      <svg 
-        width="842" 
-        height="595" 
-        viewBox="0 0 842 595" 
-        fill="none" 
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ width: '100%', height: '100%' }}
+    <div 
+      ref={ref} 
+      className="bg-white text-[#006938] overflow-hidden relative" 
+      style={{ 
+        width: '842px', 
+        height: '595px',
+        fontFamily: "'S-Core Dream', 'Pretendard', sans-serif"
+      }}
+    >
+      {/* 1. 좌측 상단 초록색 결과 박스 (x:41, y:30, w:275, h:157) */}
+      <div 
+        className="absolute left-[41px] top-[30px] w-[275px] h-[157px] bg-[#006938] rounded-[20px] flex flex-col items-center pt-[16px]"
       >
-        <rect width="842" height="595" fill="white"/>
-        <g clipPath="url(#clip0_149_2)">
-          <rect width="595" height="842" transform="matrix(0 1 -1 0 842 0)" fill="white"/>
-          <line x1="41" y1="205" x2="801" y2="205" stroke="#006938" strokeWidth="2"/>
+        <div className="bg-white rounded-full px-6 py-1 mb-6 text-[11px] font-extrabold tracking-tight">
+          PATIENT RESULT
+        </div>
+        <div className="text-white text-center">
+          <div className="text-[26px] font-black leading-tight tracking-tighter mb-1">
+            {safeTypeName}
+          </div>
+          <div className="text-[20px] font-black opacity-70 tracking-[4px]">
+            {safeMbti}
+          </div>
+        </div>
+      </div>
 
-          {/* 좌측 상단: 결과물 영역 */}
-          <rect x="41" y="30" width="275" height="157" rx="20" fill="#006938"/>
-          <rect x="107" y="46" width="140" height="24" rx="12" fill="white"/>
-          <text x="177" y="63" textAnchor="middle" fill="#006938" style={{ fontSize: '11px', fontWeight: 'bold' }}>PATIENT RESULT</text>
-          <text x="178" y="115" textAnchor="middle" fill="white" style={{ fontSize: '28px', fontWeight: 'bold', fontFamily: 'serif' }}>{safeTypeName}</text>
-          <text x="178" y="155" textAnchor="middle" fill="rgba(255,255,255,0.7)" style={{ fontSize: '22px', fontWeight: '900', fontFamily: 'monospace', letterSpacing: '4px' }}>{safeMbti}</text>
+      {/* 2. 중앙 상단 타이틀 박스 (x:330.5, y:30.5, w:274, h:156) */}
+      <div 
+        className="absolute left-[330.5px] top-[30.5px] w-[274px] h-[156px] border border-[#006938] rounded-[20px] flex flex-col items-center pt-[20px]"
+      >
+        <div className="bg-[#006938] text-white rounded-full px-6 py-1 mb-8 text-[11px] font-extrabold tracking-wider">
+          PRESCRIPTION
+        </div>
+        <div className="text-[32px] font-black">마음 처방전</div>
+      </div>
 
-          {/* 좌측 하단: 체험 확인 스탬프 공간 */}
-          <g transform="translate(41, 440)">
-            <rect width="120" height="120" rx="60" stroke="#006938" strokeWidth="1" strokeDasharray="4 4" fill="none" opacity="0.15"/>
-            <text x="60" y="65" textAnchor="middle" fill="#006938" opacity="0.3" style={{ fontSize: '11px', fontWeight: '900' }}>STAMP HERE</text>
-            <text x="60" y="78" textAnchor="middle" fill="#006938" opacity="0.2" style={{ fontSize: '8px', fontWeight: '700' }}>CHECK-IN OFFICE</text>
+      {/* 3. 우측 상단 Q&A 영역 (x:618, y:30) */}
+      <div className="absolute left-[618px] top-[40px] w-[200px] flex flex-col gap-6">
+        {[
+          { q: 'Q. 나를 알려주세요', a: safeConcern },
+          { q: 'Q. 요즘 나의 고민', a: safeReason },
+          { q: 'Q. 평온을 위한 한줄', a: safeAiLine }
+        ].map((item, idx) => (
+          <div key={idx} className="flex flex-col gap-1">
+            <div className="text-[9px] font-black opacity-60 italic">{item.q}</div>
+            <div className="text-[11px] font-extrabold leading-tight border-l-2 border-[#006938] pl-2">
+              {item.a}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 4. 상세 처방 내용 (x:330 ~ 800 영역으로 조정) */}
+      <div className="absolute left-[330.5px] top-[215px] w-[480px] flex flex-col gap-8">
+        {/* 명상 처방 */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline gap-2">
+            <span className="text-[18px] font-black">명상 처방</span>
+            <span className="text-[16px] font-bold">: {prescription?.meditation.title}</span>
+          </div>
+          <p className="text-[14px] leading-relaxed text-opacity-90 font-medium whitespace-pre-wrap">
+            {prescription?.meditation.desc}
+          </p>
+        </div>
+
+        {/* 오늘의 차 & 추천 향 (Row형 배치) */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2 border-l-2 border-[#006938] pl-3">
+            <div className="flex items-baseline gap-2">
+              <span className="text-[14px] font-black">오늘의 차</span>
+              <span className="text-[13px] font-extrabold">{prescription?.tea.title}</span>
+            </div>
+            <p className="text-[11px] leading-snug opacity-80">{prescription?.tea.desc}</p>
+          </div>
+          <div className="flex flex-col gap-2 border-l-2 border-[#006938] pl-3">
+            <div className="flex items-baseline gap-2">
+              <span className="text-[14px] font-black">추천 향</span>
+              <span className="text-[13px] font-extrabold">{prescription?.incense.title}</span>
+            </div>
+            <p className="text-[11px] leading-snug opacity-80">{prescription?.incense.desc}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. 좌측 하단 스탬프 구역 (x:41, y:440) */}
+      <div className="absolute left-[41px] top-[410px] w-[140px] h-[140px] flex items-center justify-center">
+        <div className="w-full h-full border-2 border-dashed border-[#006938] opacity-20 rounded-full flex flex-col items-center justify-center">
+          <div className="text-[10px] font-black opacity-40">STAMP HERE</div>
+          <div className="text-[8px] font-bold opacity-30">MAUM-RX OFFICE</div>
+        </div>
+      </div>
+
+      {/* 6. 우측 하단 로고 (SVG) */}
+      <div className="absolute left-[330.5px] bottom-[20px] w-[181px] h-[106px] opacity-80">
+        <svg width="181" height="106" viewBox="0 0 181 106" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clipPath="url(#clip_logo_f)">
+            <path d="M2.44527 48.0548L0 50.4927V81.6803L2.44527 84.1182H30.7945L33.2398 81.6803V50.4927L30.7945 48.0548H2.44527ZM31.3313 80.8875L29.9993 82.2154H3.23055L1.89857 80.8875V51.2756L3.23055 49.9477H30.0093L31.3413 51.2756V80.8875H31.3313Z" fill="#006838"/>
+            <path d="M39.3828 48.0549L36.9375 50.4928V81.6803L39.3828 84.1183H67.732L70.1773 81.6803V50.4928L67.732 48.0549H39.3828ZM68.2788 80.8875L66.9468 82.2155H40.168L38.8361 80.8875V51.2757L40.168 49.9477H66.9468L68.2788 51.2757V80.8875Z" fill="#006838"/>
+            <path d="M76.3203 48.0549L73.875 50.4928V81.6803L76.3203 84.1183H104.67L107.115 81.6803V50.4928L104.67 48.0549H76.3203ZM105.216 80.8875L103.884 82.2155H77.1055L75.7736 80.8875V51.2757L77.1055 49.9477H103.884L105.216 51.2757V80.8875Z" fill="#006838"/>
+            <path d="M113.259 48.0549L110.813 50.4928V81.6803L113.259 84.1183H141.608L144.053 81.6803V50.4928L141.608 48.0549H113.259ZM142.155 80.8875L140.823 82.2155H114.044L112.712 80.8875V51.2757L114.044 49.9477H140.823L142.155 51.2757V80.8875Z" fill="#006838"/>
+            <path d="M178.555 48.0549H150.206L147.761 50.4928V81.6803L150.206 84.1183H178.555L181.001 81.6803V50.4928L178.555 48.0549ZM179.092 80.8875L177.76 82.2155H150.981L149.649 80.8875V51.2757L150.981 49.9477H177.76L179.092 51.2757V80.8875H31.3313Z" fill="#006838"/>
           </g>
+          <defs><clipPath id="clip_logo_f"><rect width="181" height="106" fill="white"/></clipPath></defs>
+        </svg>
+      </div>
 
-          {/* 우측: 질문과 응답 (이모지 없는 고정형 명조체) */}
-          <rect x="330.5" y="30.5" width="274" height="156" rx="19.5" stroke="#006938"/>
-          <rect x="420" y="51" width="96" height="24" rx="12" fill="#006938"/>
-          <text x="468" y="68" textAnchor="middle" fill="white" style={{ fontSize: '11px', fontWeight: 'bold' }}>PRESCRIPTION</text>
-          <text x="467" y="125" textAnchor="middle" fill="#006938" style={{ fontSize: '36px', fontWeight: 'bold', fontFamily: 'serif' }}>마음 처방전</text>
+      {/* 7. 우측 하단 메타데이터 표 (x:583, y:481, w:234, h:73) */}
+      <div 
+        className="absolute left-[583px] top-[481px] w-[234px] h-[73px] border-t-2 border-[#006938]"
+      >
+        {[
+          { label: 'ISSUE DATE', value: today },
+          { label: 'VISITOR NO.', value: `#${String(visitorCount).padStart(4, '0')}` },
+          { label: 'RX CODE', value: safeCode }
+        ].map((item, idx) => (
+          <div key={idx} className="flex h-[24.2px] border-b border-[#006938] leading-none items-center">
+            <div className="w-[100px] pl-3 text-[9px] font-black border-r border-[#006938] h-full flex items-center">{item.label}</div>
+            <div className="flex-1 pl-3 text-[11px] font-black h-full flex items-center tracking-tighter">{item.value}</div>
+          </div>
+        ))}
+      </div>
 
-          <g transform="translate(350, 230)">
-            <g transform="translate(0, 0)">
-              <text x="0" y="20" fill="#006938" style={{ fontSize: '18px', fontWeight: 'bold' }}>명상 처방</text>
-              <text x="75" y="20" fill="#006938" style={{ fontSize: '16px', fontWeight: 'bold' }}>: {prescription?.meditation.title}</text>
-              <foreignObject x="0" y="35" width="430" height="60">
-                <div style={{ color: '#006938', fontSize: '14px', lineHeight: '1.4', fontFamily: 'serif', paddingRight: '10px' }}>{prescription?.meditation.desc}</div>
-              </foreignObject>
-            </g>
-            <g transform="translate(0, 95)">
-              <text x="0" y="20" fill="#006938" style={{ fontSize: '18px', fontWeight: 'bold' }}>오늘의 차</text>
-              <text x="75" y="20" fill="#006938" style={{ fontSize: '16px', fontWeight: 'bold' }}>: {prescription?.tea.title}</text>
-              <foreignObject x="0" y="35" width="430" height="60">
-                <div style={{ color: '#006938', fontSize: '14px', lineHeight: '1.4', fontFamily: 'serif', paddingRight: '10px' }}>{prescription?.tea.desc}</div>
-              </foreignObject>
-            </g>
-            <g transform="translate(0, 190)">
-              <text x="0" y="20" fill="#006938" style={{ fontSize: '18px', fontWeight: 'bold' }}>추천 향</text>
-              <text x="58" y="20" fill="#006938" style={{ fontSize: '16px', fontWeight: 'bold' }}>: {prescription?.incense.title}</text>
-              <foreignObject x="0" y="35" width="430" height="60">
-                <div style={{ color: '#006938', fontSize: '14px', lineHeight: '1.4', fontFamily: 'serif', paddingRight: '10px' }}>{prescription?.incense.desc}</div>
-              </foreignObject>
-            </g>
-          </g>
-
-          {/* 우측 하단 메타데이터 */}
-          <g transform="translate(583, 481)">
-            <line x1="0" y1="0" x2="234" y2="0" stroke="#006938" strokeWidth="2"/>
-            <line x1="0" y1="24.7" x2="234" y2="24.7" stroke="#006938"/><line x1="0" y1="48.9" x2="234" y2="48.9" stroke="#006938"/><line x1="0" y1="73.2" x2="234" y2="73.2" stroke="#006938"/><line x1="118.5" y1="1" x2="118.5" y2="74" stroke="#006938"/>
-            <text x="10" y="17" fill="#006938" style={{ fontSize: '10px', fontWeight: 'bold' }}>ISSUE DATE</text>
-            <text x="128" y="17" fill="#006938" style={{ fontSize: '12px', fontWeight: '900' }}>{today}</text>
-            <text x="10" y="41" fill="#006938" style={{ fontSize: '10px', fontWeight: 'bold' }}>VISITOR NO.</text>
-            <text x="128" y="41" fill="#006938" style={{ fontSize: '12px', fontWeight: '900' }}>#{String(visitorCount).padStart(4, '0')}</text>
-            <text x="10" y="65" fill="#006938" style={{ fontSize: '10px', fontWeight: 'bold' }}>RX CODE</text>
-            <text x="128" y="65" fill="#006938" style={{ fontSize: '12px', fontWeight: '900' }}>{safeCode}</text>
-          </g>
-
-          <text x="801" y="580" textAnchor="end" fill="#006938" style={{ fontSize: '9px', fontWeight: 'bold', opacity: 0.5 }}>2026 SEOUL INT&apos;L BUDDHISM EXPO | MAUM-RX</text>
-        </g>
-        <defs><clipPath id="clip0_149_2"><rect width="595" height="842" fill="white" transform="matrix(0 1 -1 0 842 0)"/></clipPath></defs>
-      </svg>
+      {/* 8. 하단 푸터 텍스트 */}
+      <div className="absolute left-[41px] bottom-[20px] text-[8px] font-bold opacity-30 tracking-widest uppercase">
+        2026 Seoul International Buddhism Expo | Mind Prescription Service
+      </div>
     </div>
   );
 });

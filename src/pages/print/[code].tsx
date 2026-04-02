@@ -207,6 +207,9 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
             code={session.code}
             mbtiStr={session.mbti}
             prescription={prescription}
+            concern={session.concern}
+            reason={session.reason}
+            aiLine={session.aiLine}
             mode="print"
           />
         )}

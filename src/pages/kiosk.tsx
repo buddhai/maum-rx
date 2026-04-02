@@ -289,6 +289,9 @@ export default function KioskPage() {
                       code={session.code}
                       mbtiStr={session.mbtiStr}
                       prescription={prescription}
+                      concern={session.concern}
+                      reason={session.reason}
+                      aiLine={session.aiLine}
                       mode="print"
                     />
                   )}
@@ -306,6 +309,9 @@ export default function KioskPage() {
             code={session.code}
             mbtiStr={session.mbtiStr}
             prescription={prescription}
+            concern={session.concern}
+            reason={session.reason}
+            aiLine={session.aiLine}
             mode="print"
           />
         )}
