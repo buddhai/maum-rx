@@ -150,9 +150,8 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
     );
   }
 
-  // ─── [PRINT MODE: PREMIUM FIGMA V7.0] ───
-  // 피그마 디자인(842x595px)을 기반으로 한 고해상도 레이아웃.
-  // 인쇄시 브라우저가 A4 가로(297x210mm) 비율에 맞춰 자동 스케일링합니다.
+  // ─── [PRINT MODE: PREMIUM FIGMA V8.0 - ABSOLUTE FIDELITY] ───
+  // 피그마 디자인(842x595px)의 모든 좌표를 절대값으로 매핑하여 픽셀 완벽 구현
   return (
     <div 
       ref={ref} 
@@ -163,167 +162,123 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
         backgroundColor: 'white',
         position: 'relative',
         overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'start',
-        padding: '30px 25px 30px 41px',
-        boxSizing: 'border-box',
-        gap: '6px',
         fontFamily: "'S-Core Dream', sans-serif",
         color: '#006938'
       }}
     >
-      {/* [상단 섹션] 처방 유형 및 명상법 */}
-      <section style={{ width: '564px', height: '166px', display: 'flex', gap: '14px', marginBottom: '9px' }}>
-        {/* 1-1. 처방 유형 분석 박스 */}
-        <div style={{
-          width: '275px',
-          borderRadius: '20px',
-          backgroundColor: '#006938',
-          color: 'white',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '16px 18px 9px',
-          boxSizing: 'border-box',
-          gap: '10px',
-          textAlign: 'center'
-        }}>
-          <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', padding: '0 50px' }}>
-            <div style={{
-              flex: 1,
-              borderRadius: '20px',
-              backgroundColor: 'white',
-              color: '#006938',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '6px 10px',
-              fontSize: '10px',
-              fontWeight: '900'
-            }}>
-              마음 처방 유형
-            </div>
-          </div>
-          <div style={{
-            alignSelf: 'stretch',
-            fontSize: '18px',
-            fontWeight: '900',
-            lineHeight: '1.6',
-            wordBreak: 'keep-all'
-          }}>
-            {safeTypeName}
-          </div>
-          <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', padding: '0 40px' }}>
-            <div style={{
-              fontSize: '10px',
-              lineHeight: '1.5',
-              fontWeight: '500',
-              opacity: 0.9,
-              wordBreak: 'keep-all'
-            }}>
-              {safeAiLine}
-            </div>
-          </div>
-        </div>
+      {/* 1. 처방 유형 박스 (TOP LEFT - GREEN) - x:41, y:30 */}
+      <div style={{
+        position: 'absolute', left: '41px', top: '30px', width: '275px', height: '157px',
+        borderRadius: '20px', backgroundColor: '#006938', color: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 18px', boxSizing: 'border-box'
+      }}>
+        <div style={{ borderRadius: '20px', backgroundColor: 'white', color: '#006938', padding: '5px 12px', fontSize: '10px', fontWeight: '900', marginBottom: '14px' }}>마음 처방 유형</div>
+        <div style={{ fontSize: '18px', fontWeight: '900', textAlign: 'center', lineHeight: '1.4', wordBreak: 'keep-all', marginBottom: '8px' }}>{safeTypeName}</div>
+        <div style={{ fontSize: '10px', textAlign: 'center', opacity: 0.9, lineHeight: '1.5', padding: '0 10px' }}>{safeAiLine}</div>
+      </div>
 
-        {/* 1-2. 명상법 처방 */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{
-            flex: 1,
-            borderRadius: '20px',
-            border: '1px solid #006938',
-            backgroundColor: 'white',
-            padding: '19px 27px 19px 28px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '17px',
-            boxSizing: 'border-box'
-          }}>
-            <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', padding: '0 61px' }}>
-              <div style={{
-                flex: 1,
-                borderRadius: '20px',
-                backgroundColor: '#006938',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '6px 10px',
-                fontSize: '10px',
-                fontWeight: '900'
+      {/* 2. 명상법 처방 (TOP RIGHT - WHITE) - x:330, y:30 */}
+      <div style={{
+        position: 'absolute', left: '330px', top: '30px', width: '274px', height: '156px',
+        borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 18px', boxSizing: 'border-box'
+      }}>
+        <div style={{ borderRadius: '20px', backgroundColor: '#006938', color: 'white', padding: '5px 12px', fontSize: '10px', fontWeight: '900', marginBottom: '14px' }}>명상법 처방</div>
+        <div style={{ fontSize: '18px', fontWeight: '900', textAlign: 'center', marginBottom: '8px' }}>{prescription?.meditation.title}</div>
+        <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.meditation.desc}</div>
+      </div>
+
+      {/* 3. 인센스 처방 (MID LEFT - WHITE) - x:41, y:202 */}
+      <div style={{
+        position: 'absolute', left: '41px', top: '202px', width: '275px', height: '157px',
+        borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 18px', boxSizing: 'border-box'
+      }}>
+        <div style={{ borderRadius: '20px', backgroundColor: '#006938', color: 'white', padding: '5px 12px', fontSize: '10px', fontWeight: '900', marginBottom: '14px' }}>인센스 처방</div>
+        <div style={{ fontSize: '18px', fontWeight: '900', textAlign: 'center', marginBottom: '8px' }}>{prescription?.incense.title}</div>
+        <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.incense.desc}</div>
+      </div>
+
+      {/* 4. 허브차 처방 (MID RIGHT - WHITE) - x:330, y:202 */}
+      <div style={{
+        position: 'absolute', left: '330px', top: '202px', width: '274px', height: '156px',
+        borderRadius: '20px', border: '1.5px solid #006938', backgroundColor: 'white',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 18px', boxSizing: 'border-box'
+      }}>
+        <div style={{ borderRadius: '20px', backgroundColor: '#006938', color: 'white', padding: '5px 12px', fontSize: '10px', fontWeight: '900', marginBottom: '14px' }}>허브차 처방</div>
+        <div style={{ fontSize: '18px', fontWeight: '900', textAlign: 'center', marginBottom: '8px' }}>{prescription?.tea.title}</div>
+        <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.5', wordBreak: 'keep-all' }}>{prescription?.tea.desc}</div>
+      </div>
+
+      {/* ─── [NEW] 체험 확인 (STAMP SECTION) ─── */}
+      <div style={{ position: 'absolute', left: '625px', top: '35px', width: '180px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+          <span style={{ fontSize: '24px', fontWeight: '900' }}>체험 확인</span>
+          <span style={{ fontSize: '10px', fontWeight: '500', opacity: 0.8, lineHeight: '1.2' }}>선명상축제에서 나에게 맞는<br/>마음처방을 체험해보세요</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '10px' }}>
+          {[
+            { label: '명상 체험소', bg: '#E6EFEA' },
+            { label: '허브차 명상', bg: '#E6EFEA' },
+            { label: '인센스 처방', bg: '#E6EFEA' }
+          ].map((item, idx) => (
+            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ 
+                width: '64px', height: '64px', borderRadius: '50%', 
+                border: '1.5px dashed #006938', backgroundColor: item.bg,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '10px', fontWeight: '900', textAlign: 'center', padding: '0 5px', boxSizing: 'border-box'
               }}>
-                명상법 처방
+                {item.label}
               </div>
             </div>
-            <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: '900', marginBottom: '12px' }}>
-                {prescription?.meditation.title}
-              </h3>
-              <div style={{ fontSize: '10px', lineHeight: '1.5', color: '#006838', fontWeight: '500', wordBreak: 'keep-all' }}>
-                {prescription?.meditation.desc}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* [중단 섹션] 인센스 및 차 처방 */}
-      <section style={{ display: 'flex', gap: '14px', width: '564px' }}>
-        <div style={{ width: '275px', height: '166px', borderRadius: '20px', border: '1px solid #006938', padding: '19px 27px 19px 28px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '17px' }}>
-          <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', padding: '0 61px' }}>
-            <div style={{ flex: 1, borderRadius: '20px', backgroundColor: '#006938', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px 10px', fontSize: '10px', fontWeight: '900' }}>
-              인센스 처방
-            </div>
-          </div>
-          <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: '900', marginBottom: '12px' }}>{prescription?.incense.title}</h3>
-            <div style={{ fontSize: '10px', lineHeight: '1.5', fontWeight: '500', wordBreak: 'keep-all' }}>{prescription?.incense.desc}</div>
-          </div>
+      {/* [하단 영역] 로고 및 고유 정보 */}
+      
+      {/* 로고 영역 (BOTTOM LEFT) */}
+      <div style={{ position: 'absolute', left: '41px', bottom: '40px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ fontSize: '10px', fontWeight: '700', lineHeight: '1.4' }}>
+          당신의 마음을 읽고<br/>선명상의 지혜로<br/>처방드립니다.
         </div>
+        <img src="/Group.svg" style={{ width: '100px', height: 'auto', marginTop: '10px' }} alt="MIND RX" />
+        <div style={{ fontSize: '7px', fontWeight: '700', opacity: 0.5 }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | SEON MEDITATION FESTIVAL</div>
+      </div>
 
-        <div style={{ width: '275px', height: '166px', borderRadius: '20px', border: '1px solid #006938', padding: '19px 27px 19px 28px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '17px' }}>
-          <div style={{ alignSelf: 'stretch', display: 'flex', justifyContent: 'center', padding: '0 61px' }}>
-            <div style={{ flex: 1, borderRadius: '20px', backgroundColor: '#006938', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px 10px', fontSize: '10px', fontWeight: '900' }}>
-              허브차 처방
-            </div>
+      {/* Q&A 및 코드 영역 (BOTTOM RIGHT) */}
+      <div style={{ position: 'absolute', right: '25px', bottom: '30px', width: '310px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        {/* Q&A Grid */}
+        <div style={{ borderTop: '2px solid #006938', paddingTop: '15px', display: 'flex', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '10px', fontWeight: '900', whiteSpace: 'nowrap' }}>
+            <div>Q. 나를 알려주세요</div>
+            <div>Q. 요즘 나의 고민</div>
+            <div>Q. 이유</div>
           </div>
-          <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: '900', marginBottom: '12px' }}>{prescription?.tea.title}</h3>
-            <div style={{ fontSize: '10px', lineHeight: '1.5', fontWeight: '500', wordBreak: 'keep-all' }}>{prescription?.tea.desc}</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '10px', fontWeight: '500', color: '#333' }}>
+            <div>{safeMbti}</div>
+            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{safeConcern}</div>
+            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{safeReason}</div>
           </div>
-        </div>
-      </section>
-
-      {/* [하단 섹션] 메타데이터 및 정보 */}
-      <section style={{ alignSelf: 'stretch', display: 'flex', alignItems: 'end', justifyContent: 'space-between', marginTop: '20px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '11px', opacity: 0.6 }}>
-           <img src="/landing.svg" style={{ width: '120px', objectFit: 'contain' }} alt="MIND RX" />
-           <div style={{ fontSize: '8px', fontWeight: '700' }}>2026 SEOUL INTERNATIONAL BUDDHISM EXPO | SEON MEDITATION FESTIVAL</div>
         </div>
 
-        <div style={{ width: '280px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-           <div style={{ borderTop: '0.5px solid #006938', paddingTop: '10px', display: 'flex', gap: '20px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '8px', fontWeight: '900' }}>
-                 <div>Q. 나를 알려주세요</div>
-                 <div>Q. 요즘 나의 고민</div>
-                 <div>Q. 선택한 이유</div>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '8px', fontWeight: '500' }}>
-                 <div>{safeMbti}</div>
-                 <div>{safeConcern}</div>
-                 <div>{safeReason}</div>
-              </div>
-           </div>
-           
-           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '2px solid #006938', paddingTop: '8px' }}>
-              <div style={{ fontSize: '9px', fontWeight: '900' }}>마음처방전 code</div>
-              <div style={{ fontSize: '14px', fontWeight: '900', letterSpacing: '-0.5px' }}>{safeCode}</div>
-           </div>
-           <div style={{ fontSize: '8px', opacity: 0.5, textAlign: 'right' }}>
-              ISSUE DATE: {today} | VISITOR: #{String(visitorCount).padStart(4, '0')}
-           </div>
+        {/* Prescription Code Box */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #006938', paddingTop: '10px', paddingBottom: '5px' }}>
+          <div style={{ fontSize: '10px', fontWeight: '900' }}>마음처방전 code</div>
+          <div style={{ fontSize: '20px', fontWeight: '900', letterSpacing: '-0.5px', color: '#006938' }}>{safeCode}</div>
         </div>
-      </section>
+
+        <div style={{ fontSize: '8px', opacity: 0.5, textAlign: 'right', marginTop: '-5px' }}>
+          ISSUE DATE: {today} | VISITOR: #{String(visitorCount).padStart(4, '0')}
+        </div>
+      </div>
+
+      {/* 배경 장식 선 (SVG에서 가져온 라인들) */}
+      <div style={{ position: 'absolute', left: '0', top: '0', pointerEvents: 'none', width: '100%', height: '100%', opacity: 0.1 }}>
+        <div style={{ position: 'absolute', left: '41px', top: '202px', width: '564px', height: '1px', backgroundColor: '#006938' }} />
+        <div style={{ position: 'absolute', left: '330px', top: '30px', width: '1px', height: '328px', backgroundColor: '#006938' }} />
+      </div>
     </div>
   );
 });
