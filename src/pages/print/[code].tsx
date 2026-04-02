@@ -74,6 +74,7 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
       // Check for Fully Kiosk Browser (for silent printing in kiosk mode)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).fully && (window as any).fully.print) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).fully.print();
       } else {
         window.print();
