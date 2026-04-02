@@ -71,9 +71,15 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
 
     // Trigger browser print
     setTimeout(() => {
-      window.print()
+      // Check for Fully Kiosk Browser (for silent printing in kiosk mode)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((window as any).fully && (window as any).fully.print) {
+        (window as any).fully.print();
+      } else {
+        window.print();
+      }
       setPrinting(false)
-    }, 100)
+    }, 500)
   }
 
   return (
@@ -107,7 +113,7 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
         }}>
           <div>
             <h1 style={{ fontSize: '20px', color: 'var(--dark)', fontWeight: 'bold' }}>출력 대기 중: {session.code}</h1>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>A5 가로 (210×148mm) 용지로 출력됩니다.</p>
+            <p style={{ fontSize: '14px', color: '#666', marginTop: '4px' }}>A4 가로 (297×210mm) 용지로 출력됩니다.</p>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
             <button 
@@ -143,15 +149,17 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
 
         {/* Paper Preview */}
         <div style={{
-          width: '210mm',          // A5 Long edge
-          height: '148mm',         // A5 Short edge
+          width: '297mm',          // A4 Long edge
+          height: '210mm',         // A4 Short edge
           background: 'white',
           boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
           pointerEvents: 'none',   // Prevent interaction on preview
           overflow: 'hidden',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          transform: 'scale(0.6)', // Preview scaling for tablet screen
+          transformOrigin: 'top center'
         }}>
           {prescription && (
             <PrescriptionCard
@@ -174,20 +182,24 @@ export default function PrintPreview({ session }: PrintPreviewProps) {
         }
         @media print {
           @page {
-            size: A5 landscape;
+            size: A4 landscape;
             margin: 0;
           }
           body {
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            margin: 0;
+            padding: 0;
           }
           .print-only { 
             display: block; 
-            width: 210mm;
-            height: 148mm;
+            width: 297mm;
+            height: 210mm;
             page-break-after: avoid;
             page-break-inside: avoid;
+            overflow: hidden;
           }
+          .no-print { display: none !important; }
         }
       `}</style>
       

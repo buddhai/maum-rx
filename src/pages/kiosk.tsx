@@ -17,7 +17,7 @@ export default function KioskPage() {
   const [session, setSession] = useState<SessionData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [printSize, setPrintSize] = useState<'A4-portrait' | 'A4-landscape'>('A4-portrait')
+  const [printSize, setPrintSize] = useState<'A4-portrait' | 'A4-landscape'>('A4-landscape')
   const printRef = useRef<HTMLDivElement>(null)
 
   const handleLookup = async () => {
@@ -87,11 +87,12 @@ export default function KioskPage() {
         @media print {
           @page {
             size: ${printSize === 'A4-landscape' ? 'A4 landscape' : 'A4 portrait'};
-            margin: 8mm;
+            margin: 0;
           }
           body {
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            margin: 0;
           }
           .kiosk-screen { display: none !important; }
           .kiosk-print-zone {
@@ -244,8 +245,8 @@ export default function KioskPage() {
                       cursor: 'pointer',
                     }}
                   >
-                    <option value="A4-portrait">A4 세로</option>
                     <option value="A4-landscape">A4 가로</option>
+                    <option value="A4-portrait">A4 세로</option>
                   </select>
                   <button
                     onClick={handlePrint}
@@ -269,25 +270,34 @@ export default function KioskPage() {
               {/* Paper Preview */}
               <div style={{
                 width: '100%',
-                maxWidth: printSize === 'A4-landscape' ? '900px' : '640px',
+                maxWidth: printSize === 'A4-landscape' ? '800px' : '560px',
                 aspectRatio: printSize === 'A4-landscape' ? '297/210' : '210/297',
                 background: 'white',
-                boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                 margin: '0 auto',
                 overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                border: '1px solid #eee'
               }}>
-                {prescription && (
-                  <PrescriptionCard
-                    ref={printRef}
-                    code={session.code}
-                    mbtiStr={session.mbtiStr}
-                    concern={session.concern}
-                    reason={session.reason}
-                    aiLine={session.aiLine}
-                    prescription={prescription}
-                    isPrintMode={true}
-                  />
-                )}
+                <div style={{ 
+                  transform: `scale(${printSize === 'A4-landscape' ? 800/(297*3.7795) : 560/(210*3.7795)})`,
+                  transformOrigin: 'center center'
+                }}>
+                  {prescription && (
+                    <PrescriptionCard
+                      ref={printRef}
+                      code={session.code}
+                      mbtiStr={session.mbtiStr}
+                      concern={session.concern}
+                      reason={session.reason}
+                      aiLine={session.aiLine}
+                      prescription={prescription}
+                      isPrintMode={true}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           )}
