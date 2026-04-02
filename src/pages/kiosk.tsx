@@ -120,8 +120,8 @@ export default function KioskPage() {
           alignItems: 'center',
         }}>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 'bold', margin: 0 }}>마음처방전 — 현장 출력 키오스크</h1>
-            <p style={{ fontSize: '13px', opacity: 0.8, margin: '4px 0 0' }}>2026 서울국제불교박람회 선명상축제</p>
+            <h1 style={{ fontSize: '22px', fontWeight: 'bold', margin: 0 }}>마음처방전 — 현장 출력 키오스크 V2</h1>
+            <p style={{ fontSize: '13px', opacity: 0.8, margin: '4px 0 0' }}>2026 서울국제불교박람회 선명상축제 (최신 레이아웃)</p>
           </div>
           {session && (
             <button onClick={handleReset} style={{
