@@ -18,7 +18,6 @@ export default function KioskPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [printSize, setPrintSize] = useState<'A4-portrait' | 'A4-landscape'>('A4-landscape')
-  const printRef = useRef<HTMLDivElement>(null)
 
   const handleLookup = async () => {
     if (!code.trim()) return
