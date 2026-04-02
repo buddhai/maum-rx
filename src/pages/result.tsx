@@ -101,6 +101,7 @@ export default function ResultPage() {
       <div className="w-full flex-1 overflow-y-auto animate-fade-in bg-white">
         {prescription && (
           <PrescriptionCard
+            ref={printRef}
             code={session.code}
             mbtiStr={session.mbtiStr}
             prescription={prescription}
