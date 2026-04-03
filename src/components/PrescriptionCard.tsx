@@ -213,7 +213,7 @@ const PrescriptionCard = forwardRef<HTMLDivElement, PrescriptionCardProps>(({
       <div style={{ position: 'absolute', left: '41px', top: '385px', width: '420px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '20px' }}>
           <span style={{ fontSize: '32px', fontWeight: '900' }}>체험 확인</span>
-          <span style={{ fontSize: '11px', fontWeight: '500', opacity: 0.8, lineHeight: '1.5' }}>선명상축제에서 나에게 맞는<br/>마음처방을 체험해보세요</span>
+          <span style={{ fontSize: '11px', fontWeight: '500', opacity: 0.8, lineHeight: '1.5' }}>선명상대회에서 나에게 맞는<br/>마음처방을 체험해보세요</span>
         </div>
         <div style={{ display: 'flex', gap: '24px' }}>
           {[
